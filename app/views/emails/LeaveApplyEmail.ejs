@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email Template</title>
+</head>
+
+<body>
+    <p>Dear <%= first_name %>
+    </p>
+
+    <p>I hope this email finds you well. I am writing to formally request a leave of absence from work.</p>
+    <p><strong>Leave Details:</strong></p>
+    <ul>
+        <li><strong>Leave Type:</strong>
+            <%=leave_type%>
+        </li>
+        <li><strong>Start Date:</strong>
+            <%= from_date %>
+        </li>
+        <li><strong>End Date:</strong>
+            <%= to_date %>
+        </li>
+
+        <li><strong>Reason:</strong>
+            <%=reason%>
+        </li>
+    </ul>
+    <p>Please let me know if you require any further information or documentation for processing the leave request.</p>
+    <p>Thank you for your attention to this matter.</p>
+    <p>Best regards,</p>
+
+
+
+</body>
+
+</html>

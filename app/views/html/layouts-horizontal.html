@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+    
+<!-- Mirrored from themesbrand.com/admiria-multi/layouts/vertical/layouts-horizontal.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 May 2023 10:03:23 GMT -->
+<head>
+    
+        <meta charset="utf-8">
+        <title>Horizontal Layout | Admiria - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+        <meta content="Themesbrand" name="author">
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+    
+        <!-- C3 Chart css -->
+        <link href="assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css">
+    
+        <!-- Bootstrap Css -->
+        <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css">
+        <!-- Icons Css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
+        <!-- App Css-->
+        <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css">
+    
+    </head>
+
+    <body data-topbar="dark" data-layout="horizontal">
+
+        <!-- Loader -->
+        <div id="preloader"><div id="status"><div class="spinner"></div></div></div>
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <a href="index.html" class="logo logo-dark">
+                                <span class="logo-sm">
+                                    <img src="assets/images/logo.png" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo-dark.png" alt="" height="30">
+                                </span>
+                            </a>
+
+                            <a href="index.html" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="assets/images/logo-light.png" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo-light.png" alt="" height="30">
+                                </span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-sm me-2 font-size-24 d-lg-none header-item waves-effect waves-light" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+           
+                    </div>
+
+                     <!-- Search input -->
+                     <div class="search-wrap" id="search-wrap">
+                        <div class="search-bar">
+                            <input class="search-input form-control" placeholder="Search">
+                            <a href="#" class="close-search toggle-search" data-target="#search-wrap">
+                                <i class="mdi mdi-close-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+
+                        <div class="dropdown d-none d-lg-inline-block me-2">
+                            <button type="button" class="btn header-item toggle-search noti-icon waves-effect" data-target="#search-wrap">
+                                <i class="mdi mdi-magnify"></i>
+                            </button>
+                        </div>
+
+                        <div class="dropdown d-none d-lg-inline-block me-2">
+                            <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
+                                <i class="mdi mdi-fullscreen"></i>
+                            </button>
+                        </div>
+
+                        <div class="dropdown d-none d-md-block me-2">
+                            <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="font-size-16"> English </span> <img class="ms-2" src="assets/images/flags/us_flag.jpg" alt="Header Language" height="16">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <img src="assets/images/flags/germany_flag.jpg" alt="user-image" height="12"> <span class="align-middle"> German </span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <img src="assets/images/flags/italy_flag.jpg" alt="user-image" height="12"> <span class="align-middle"> Italian </span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <img src="assets/images/flags/french_flag.jpg" alt="user-image" height="12"> <span class="align-middle"> French </span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <img src="assets/images/flags/spain_flag.jpg" alt="user-image" height="12"> <span class="align-middle"> Spanish </span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <img src="assets/images/flags/russia_flag.jpg" alt="user-image" height="12"> <span class="align-middle"> Russian </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-inline-block me-2">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ion ion-md-notifications"></i>
+                                <span class="badge bg-danger rounded-pill">3</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                                <div class="p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="m-0 font-size-16"> Notification (3) </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-simplebar style="max-height: 230px;">
+                                    <a href="#" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-success rounded-circle font-size-16">
+                                                    <i class="mdi mdi-cart-outline"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h6 class="mt-0 font-size-15 mb-1">Your order is placed</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1">Dummy text of the printing and typesetting industry.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-warning rounded-circle font-size-16">
+                                                    <i class="mdi mdi-message-text-outline"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h6 class="mt-0 font-size-15 mb-1">New Message received</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1">You have 87 unread messages</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-info rounded-circle font-size-16">
+                                                    <i class="mdi mdi-glass-cocktail"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h6 class="mt-0 font-size-15 mb-1">Your item is shipped</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1">It is a long established fact that a reader will</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-2 border-top">
+                                    <div class="d-grid">
+                                        <a class="btn btn-sm btn-link font-size-14  text-center" href="javascript:void(0)">
+                                            View all
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> Profile</a>
+                                <a class="dropdown-item" href="#"><i class="bx bx-wallet font-size-16 align-middle me-1"></i> My Wallet</a>
+                                <a class="dropdown-item d-block" href="#"><span class="badge bg-success float-end">11</span><i class="bx bx-wrench font-size-16 align-middle me-1"></i> Settings</a>
+                                <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i> Lock screen</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> Logout</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+                                <i class="mdi mdi-spin mdi-cog"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+    
+            </header>
+    
+                <div class="topnav">
+                    <div class="container-fluid">
+                        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+    
+                            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                                <ul class="navbar-nav">
+
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
+                                            <i class="mdi mdi-view-dashboard me-2"></i>Dashboard <div class="arrow-down"></div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="topnav-dashboard">
+                                            <a href="index.html" class="dropdown-item">Dashboard One</a>
+                                            <a href="dashboard-2.html" class="dropdown-item">Dashboard Two</a>
+                                        </div>
+                                    </li>
+
+    
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ui kit" role="button">
+                                            <i class="mdi mdi-buffer me-2"></i>UI Kit <div class="arrow-down"></div>
+                                        </a>
+
+                                        <div class="dropdown-menu mega-dropdown-menu px-2 dropdown-mega-menu-xl dropdown-menu-left"
+                                            aria-labelledby="topnav-ui kit">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                       <a href="ui-buttons.html" class="dropdown-item">Buttons</a>
+                                                       <a href="ui-colors.html" class="dropdown-item">Colors</a>
+                                                       <a href="ui-cards.html" class="dropdown-item">Cards</a>
+                                                       <a href="ui-tabs-accordions.html" class="dropdown-item">Tabs &amp; Accordions</a>
+                                                       <a href="ui-modals.html" class="dropdown-item">Modals</a>
+                                                       <a href="ui-images.html" class="dropdown-item">Images</a>
+                                                       <a href="ui-alerts.html" class="dropdown-item">Alerts</a>
+                                                       <a href="ui-progressbars.html" class="dropdown-item">Progress Bars</a>
+                                                       <a href="ui-dropdowns.html" class="dropdown-item">Dropdowns</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                       <a href="ui-lightbox.html" class="dropdown-item">Lightbox</a>
+                                                       <a href="ui-navs.html" class="dropdown-item">Navs</a>
+                                                       <a href="ui-pagination.html" class="dropdown-item">Pagination</a>
+                                                       <a href="ui-popover-tooltips.html" class="dropdown-item">Popover &amp; Tooltips</a>
+                                                       <a href="ui-badge.html" class="dropdown-item">Badge</a>
+                                                       <a href="ui-carousel.html" class="dropdown-item">Carousel</a>
+                                                       <a href="ui-video.html" class="dropdown-item">Video</a>
+                                                       <a href="ui-typography.html" class="dropdown-item">Typography</a>
+                                                       <a href="ui-sweet-alert.html" class="dropdown-item">Sweet-Alert</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                       <a href="ui-grid.html" class="dropdown-item">Grid</a>
+                                                       <a href="ui-animation.html" class="dropdown-item">Animation</a>
+                                                       <a href="ui-highlight.html" class="dropdown-item">Highlight</a>
+                                                       <a href="ui-rating.html" class="dropdown-item">Rating</a>
+                                                       <a href="ui-nestable.html" class="dropdown-item">Nestable</a>
+                                                       <a href="ui-alertify.html" class="dropdown-item">Alertify</a>
+                                                       <a href="ui-rangeslider.html" class="dropdown-item">Range Slider</a>
+                                                       <a href="ui-sessiontimeout.html" class="dropdown-item">Session Timeout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+    
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button">
+                                            <i class="mdi mdi-cube-outline me-2"></i>Components <div class="arrow-down"></div>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="topnav-components">
+
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-email"
+                                                    role="button">
+                                                    Email <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-email">
+                                                   <a href="email-inbox.html" class="dropdown-item">Inbox</a>
+                                                   <a href="email-read.html" class="dropdown-item">Email Read</a>
+                                                   <a href="email-compose.html" class="dropdown-item">Email Compose</a>
+                                                </div>
+                                            </div>
+
+                                            <a href="widgets.html" class="dropdown-item">Widgets</a>
+
+
+                                            <a href="calendar.html" class="dropdown-item">Calendar</a>
+
+
+                               
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-forms"
+                                                    role="button">
+                                                    Forms <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-forms">
+                                                   <a href="form-elements.html" class="dropdown-item">Form Elements</a>
+                                                   <a href="form-validation.html" class="dropdown-item">Form Validation</a>
+                                                   <a href="form-advanced.html" class="dropdown-item">Form Advanced</a>
+                                                   <a href="form-wizard.html" class="dropdown-item">Form Wizard</a>
+                                                   <a href="form-editors.html" class="dropdown-item">Form Editors</a>
+                                                   <a href="form-uploads.html" class="dropdown-item">Form File Upload</a>
+                                                   <a href="form-mask.html" class="dropdown-item">Form Mask</a>
+                                                   <a href="form-xeditable.html" class="dropdown-item">Form Xeditable</a>
+                                                </div>
+                                            </div>
+                                
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-chart"
+                                                    role="button">
+                                                    Chart <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-chart">
+                                                    <a href="charts-morris.html" class="dropdown-item">Morris Chart</a>
+                                                    <a href="charts-chartist.html" class="dropdown-item">Chartist Chart</a>
+                                                    <a href="charts-chartjs.html" class="dropdown-item">Chartjs Chart</a>
+                                                    <a href="charts-flot.html" class="dropdown-item">Flot Chart</a>
+                                                    <a href="charts-c3.html" class="dropdown-item">C3 Chart</a>
+                                                    <a href="charts-sparkline.html" class="dropdown-item">Sparkline Chart</a>
+                                                    <a href="charts-other.html" class="dropdown-item">Jquery Knob Chart</a>
+                                                    <a href="charts-peity.html" class="dropdown-item">Peity Chart</a>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-tables"
+                                                    role="button">
+                                                    Tables <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-tables">
+                                                    <a href="tables-basic.html" class="dropdown-item">Basic Tables</a>
+                                                    <a href="tables-datatable.html" class="dropdown-item">Data Table</a>
+                                                    <a href="tables-responsive.html" class="dropdown-item">Responsive Table</a>
+                                                    <a href="tables-editable.html" class="dropdown-item">Editable Table</a>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-icons"
+                                                    role="button">
+                                                    Icons <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-icons">
+                                                    <a href="icons-material.html" class="dropdown-item">Material Design</a>
+                                                    <a href="icons-ion.html" class="dropdown-item">Ion Icons</a>
+                                                    <a href="icons-fontawesome.html" class="dropdown-item">Font Awesome</a>
+                                                    <a href="icons-themify.html" class="dropdown-item">Themify Icons</a>
+                                                    <a href="icons-dripicons.html" class="dropdown-item">Dripicons</a>
+                                                    <a href="icons-typicons.html" class="dropdown-item">Typicons Icons</a>
+                                                    <a href="icons-weather.html" class="dropdown-item">Weather Icons</a>
+                                                    <a href="icons-mobirise.html" class="dropdown-item">Mobirise Icons</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-maps"
+                                                    role="button">
+                                                    Maps <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-maps">
+                                                   <a href="maps-google.html" class="dropdown-item"> Google Map</a>
+                                                    <a href="maps-vector.html" class="dropdown-item"> Vector Map</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-email-templates"
+                                                    role="button">
+                                                    Email Templates <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-email-templates">
+                                                    <a href="email-templates-basic.html" class="dropdown-item">Basic Action Email</a>
+                                                    <a href="email-templates-alert.html" class="dropdown-item">Alert Email</a>
+                                                    <a href="email-templates-billing.html" class="dropdown-item">Billing Email</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button"
+                                        >
+                                            <i class="mdi mdi-book-multiple-outline me-2"></i>Pages <div class="arrow-down"></div>
+                                        </a>
+
+                                        <div class="dropdown-menu mega-dropdown-menu px-2 dropdown-mega-menu-xl dropdown-menu-left"
+                                            aria-labelledby="topnav-pages">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                       <a href="pages-login.html" class="dropdown-item">Login</a>
+                                                       <a href="pages-register.html" class="dropdown-item">Register</a>
+                                                       <a href="pages-recoverpw.html" class="dropdown-item">Recover Password</a>
+                                                       <a href="pages-lock-screen.html" class="dropdown-item">Lock Screen</a>
+                                                       <a href="pages-login-2.html" class="dropdown-item">Login 2</a>
+                                                       <a href="pages-register-2.html" class="dropdown-item">Register 2</a>
+                                                       <a href="pages-recoverpw-2.html" class="dropdown-item">Recover Password 2</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                        <a href="pages-lock-screen-2.html" class="dropdown-item">Lock Screen 2</a>
+                                                        <a href="pages-timeline.html" class="dropdown-item">Timeline</a>
+                                                        <a href="pages-invoice.html" class="dropdown-item">Invoice</a>
+                                                        <a href="pages-directory.html" class="dropdown-item">Directory</a>
+                                                        <a href="pages-blank.html" class="dropdown-item">Blank Page</a>
+                                                        <a href="pages-404.html" class="dropdown-item">Error 404</a>
+                                                        <a href="pages-500.html" class="dropdown-item">Error 500</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div>
+                                                        <a href="pages-pricing.html" class="dropdown-item">Pricing</a>
+                                                        <a href="pages-gallery.html" class="dropdown-item">Gallery</a>
+                                                        <a href="pages-maintenance.html" class="dropdown-item">Maintenance</a>
+                                                        <a href="pages-coming-soon.html" class="dropdown-item">Coming Soon</a>
+                                                        <a href="faq.html" class="dropdown-item">FAQ</a>
+                                                        <a href="contact.html" class="dropdown-item">Contact</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ecommerce" role="button"
+                                        >
+                                            <i class="mdi mdi-cart-outline me-2"></i>Ecommerce <div class="arrow-down"></div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="topnav-ecommerce">
+                                
+                                            <a href="ecommerce-product-list.html" class="dropdown-item">Product List</a>
+                                            <a href="ecommerce-product-grid.html" class="dropdown-item">Product Grid</a>
+                                            <a href="ecommerce-order-history.html" class="dropdown-item">Order History</a>
+                                            <a href="ecommerce-customers.html" class="dropdown-item">Customers</a>
+                                            <a href="ecommerce-product-edit.html" class="dropdown-item">Product Edit</a>
+                                        </div>
+                                    </li>
+                        
+    
+                        
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-layout" role="button"
+                                        >
+                                            <i class="mdi mdi-movie-filter-outline me-2"></i>Layouts <div class="arrow-down"></div>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="topnav-layout">
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-layout-verti"
+                                                    role="button">
+                                                    Vertical <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-layout-verti">
+                                                    <a href="layouts-light-sidebar.html" class="dropdown-item">Light Sidebar</a>
+                                                    <a href="layouts-compact-sidebar.html" class="dropdown-item">Compact Sidebar</a>
+                                                    <a href="layouts-icon-sidebar.html" class="dropdown-item">Icon Sidebar</a>
+                                                    <a href="layouts-boxed.html" class="dropdown-item">Boxed Layout</a>
+                                                    <a href="layouts-colored-sidebar.html" class="dropdown-item">Colored Sidebar</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown">
+                                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-layout-hori"
+                                                    role="button">
+                                                    Horizontal <div class="arrow-down"></div>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="topnav-layout-hori">
+                                                    <a href="layouts-horizontal.html" class="dropdown-item">Horizontal</a>
+                                                    <a href="layouts-hori-topbar-light.html" class="dropdown-item">Light Topbar</a>
+                                                    <a href="layouts-hori-boxed.html" class="dropdown-item">Boxed Layout</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+    
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+ 
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Horizontal Layout</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Layouts</a></li>
+                                            <li class="breadcrumb-item active">Horizontal Layout</li>
+                                        </ol>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>     
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-icon bg-purple me-0 float-end"><i class="mdi mdi-basket"></i></span>
+                                            <div class="mini-stat-info">
+                                                <span class="counter text-purple">25140</span>
+                                                Total Sales
+                                            </div>
+                                            <p class=" mb-0 mt-4 text-muted">Total income: $22506 <span class="float-end"><i class="fa fa-caret-up me-1"></i>10.25%</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!--End col -->
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-icon bg-blue-grey me-0 float-end"><i class="mdi mdi-black-mesa"></i></span>
+                                            <div class="mini-stat-info">
+                                                <span class="counter text-blue-grey">65241</span>
+                                                New Orders
+                                            </div>
+                                            <p class="text-muted mb-0 mt-4">Total income: $22506 <span class="float-end"><i class="fa fa-caret-up me-1"></i>10.25%</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- End col -->
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-icon bg-brown me-0 float-end"><i class="mdi mdi-buffer"></i></span>
+                                            <div class="mini-stat-info">
+                                                <span class="counter text-brown">85412</span>
+                                                New Users
+                                            </div>
+                                            <p class="text-muted mb-0 mt-4">Total income: $22506 <span class="float-end"><i class="fa fa-caret-up me-1"></i>10.25%</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- End col -->
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-icon bg-teal me-0 float-end"><i class="mdi mdi-coffee"></i></span>
+                                            <div class="mini-stat-info">
+                                                <span class="counter text-teal">20544</span>
+                                                Unique Visitors
+                                            </div>
+                                            <p class="text-muted mb-0 mt-4">Total income: $22506 <span class="float-end"><i class="fa fa-caret-up me-1"></i>10.25%</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col -->
+                        </div> <!-- end row-->
+        
+        
+                        <div class="row">
+        
+                            <div class="col-xl-9">
+        
+                                <div class="row">
+                                    <div class="col-md-9 monthly-earning-wid">
+                                        <div class="card" style="height: 480px;">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Monthly Earnings</h4>
+        
+                                                <div class="text-center">
+                                                    <div class="btn-group mt-4" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-secondary">Day</button>
+                                                        <button type="button" class="btn btn-secondary">Month</button>
+                                                        <button type="button" class="btn btn-secondary">Year</button>
+                                                    </div>
+                                                </div>
+        
+                                                <div id="combine-chart" dir="ltr"></div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 earning-wid">
+                                        <div class="card" style="height: 480px;">
+                                            <div class="card-body">
+                                                <div class="mb-4">
+                                                    <p>Weekly Earnings</p>
+                                                    <h5>$1,542</h5>
+                                                    <span class="peity-line" data-width="100%"
+                                                        data-peity='{ "fill": ["rgba(103,168,228,0.3)"],"stroke": ["rgba(103,168,228,0.8)"]}'
+                                                        data-height="60">6,2,8,4,3,8,1,3,6,5,9,2,8,1,4,8,9,8,2,1</span>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <p>Monthly Earnings</p>
+                                                    <h5>$6,451</h5>
+                                                    <span class="peity-line" data-width="100%"
+                                                        data-peity='{ "fill": ["rgba(74,193,142,0.3)"],"stroke": ["rgba(74,193,142,0.8)"]}'
+                                                        data-height="60">6,2,8,4,-3,8,1,-3,6,-5,9,2,-8,1,4,8,9,8,2,1</span>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <p>Yearly Earnings</p>
+                                                    <h5>$84,574</h5>
+                                                    <span class="peity-line" data-width="100%"
+                                                        data-peity='{ "fill": ["rgba(232, 65, 38,0.3)"],"stroke": ["rgba(232, 65, 38,0.8)"]}'
+                                                        data-height="60">6,2,8,4,3,8,1,3,6,5,9,2,8,1,4,8,9,8,2,1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                            </div>
+        
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Sales Analytics</h4>
+        
+                                        <div class="row text-center mt-4 pt-3">
+                                            <div class="col-6">
+                                                <h5 class="mb-0 font-size-18">25610</h5>
+                                                <p class="text-muted">Activated</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h5 class="mb-0 font-size-18">56210</h5>
+                                                <p class="text-muted">Pending</p>
+                                            </div>
+                                        </div>
+        
+        
+                                        <div id="donut-chart" dir="ltr"></div>
+        
+                                    </div>
+                                </div>
+                            </div>
+        
+                        </div>
+                        <!-- end row -->
+        
+        
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Recent Stock</h4>
+        
+                                        <div class="text-center">
+                                            <div dir="ltr">
+                                                <input class="knob" data-width="120" data-height="120" data-linecap=round
+                                                    data-fgColor="#ffbb44" value="80" data-skin="tron" data-angleOffset="180"
+                                                    data-readOnly=true data-thickness=".1">
+                                            </div>
+        
+                                            <a href="#" class="btn btn-sm btn-warning text-white mt-4">View All Data</a>
+                                            <ul class="list-inline row mt-4 clearfix">
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">7,541</p>
+                                                    <p class="mb-0">Mobile Phones</p>
+                                                </li>
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">125</p>
+                                                    <p class="mb-0">Desktops</p>
+                                                </li>
+                                            </ul>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Purchase Order</h4>
+        
+                                        <div class="text-center">
+                                            <div dir="ltr">
+                                                <input class="knob" data-width="120" data-height="120" data-linecap=round
+                                                    data-fgColor="#4ac18e" value="68" data-skin="tron" data-angleOffset="180"
+                                                    data-readOnly=true data-thickness=".1">
+                                            </div>
+        
+                                            <a href="#" class="btn btn-sm btn-success mt-4">View All Data</a>
+                                            <ul class="list-inline row mt-4 clearfix">
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">2,541</p>
+                                                    <p class="mb-0">Mobile Phones</p>
+                                                </li>
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">874</p>
+                                                    <p class="mb-0">Desktops</p>
+                                                </li>
+                                            </ul>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Shipped Orders</h4>
+        
+                                        <div class="text-center">
+                                            <div dir="ltr">
+                                                <input class="knob" data-width="120" data-height="120" data-linecap=round
+                                                    data-fgColor="#8d6e63" value="39" data-skin="tron" data-angleOffset="180"
+                                                    data-readOnly=true data-thickness=".1">
+                                            </div>
+        
+                                            <a href="#" class="btn btn-sm btn-brown mt-4">View All Data</a>
+                                            <ul class="list-inline row mt-4 clearfix">
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">1,154</p>
+                                                    <p class="mb-0">Mobile Phones</p>
+                                                </li>
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">89</p>
+                                                    <p class="mb-0">Desktops</p>
+                                                </li>
+                                            </ul>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Cancelled Orders</h4>
+        
+                                        <div class="text-center">
+                                            <div dir="ltr">
+                                                <input class="knob" data-width="120" data-height="120" data-linecap=round
+                                                    data-fgColor="#90a4ae" value="95" data-skin="tron" data-angleOffset="180"
+                                                    data-readOnly=true data-thickness=".1">
+                                            </div>
+        
+                                            <a href="#" class="btn btn-sm btn-blue-grey mt-4">View All Data</a>
+                                            <ul class="list-inline row mt-4 clearfix">
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">95</p>
+                                                    <p class="mb-0">Mobile Phones</p>
+                                                </li>
+                                                <li class="col-6">
+                                                    <p class="mb-1 font-size-18 fw-bold">25</p>
+                                                    <p class="mb-0">Desktops</p>
+                                                </li>
+                                            </ul>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                        </div>
+                        <!-- end row -->
+        
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Latest Transactions</h4>
+        
+                                        <div class="table-responsive">
+                                            <table class="table table-centered table-vertical table-nowrap mb-0">
+        
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="assets/images/users/avatar-2.jpg" alt="user-image"
+                                                                class="avatar-sm rounded-circle me-2">
+                                                            Herbert C. Patton
+                                                        </td>
+                                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm
+                                                        </td>
+                                                        <td>
+                                                            $14,584
+                                                            <p class="m-0 text-muted font-size-14">Amount</p>
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                            <p class="m-0 text-muted font-size-14">Date</p>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>
+                                                            <img src="assets/images/users/avatar-3.jpg" alt="user-image"
+                                                                class="avatar-sm rounded-circle me-2">
+                                                            Mathias N. Klausen
+                                                        </td>
+                                                        <td><i class="mdi mdi-checkbox-blank-circle text-warning"></i> Waiting
+                                                            payment</td>
+                                                        <td>
+                                                            $8,541
+                                                            <p class="m-0 text-muted font-size-14">Amount</p>
+                                                        </td>
+                                                        <td>
+                                                            10/11/2016
+                                                            <p class="m-0 text-muted font-size-14">Date</p>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>
+                                                            <img src="assets/images/users/avatar-4.jpg" alt="user-image"
+                                                                class="avatar-sm rounded-circle me-2">
+                                                            Nikolaj S. Henriksen
+                                                        </td>
+                                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm
+                                                        </td>
+                                                        <td>
+                                                            $954
+                                                            <p class="m-0 text-muted font-size-14">Amount</p>
+                                                        </td>
+                                                        <td>
+                                                            8/11/2016
+                                                            <p class="m-0 text-muted font-size-14">Date</p>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>
+                                                            <img src="assets/images/users/avatar-5.jpg" alt="user-image"
+                                                                class="avatar-sm rounded-circle me-2">
+                                                            Lasse C. Overgaard
+                                                        </td>
+                                                        <td><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Payment
+                                                            expired</td>
+                                                        <td>
+                                                            $44,584
+                                                            <p class="m-0 text-muted font-size-14">Amount</p>
+                                                        </td>
+                                                        <td>
+                                                            7/11/2016
+                                                            <p class="m-0 text-muted font-size-14">Date</p>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>
+                                                            <img src="assets/images/users/avatar-6.jpg" alt="user-image"
+                                                                class="avatar-sm rounded-circle me-2">
+                                                            Kasper S. Jessen
+                                                        </td>
+                                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm
+                                                        </td>
+                                                        <td>
+                                                            $8,844
+                                                            <p class="m-0 text-muted font-size-14">Amount</p>
+                                                        </td>
+                                                        <td>
+                                                            1/11/2016
+                                                            <p class="m-0 text-muted font-size-14">Date</p>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Latest Orders</h4>
+        
+                                        <div class="table-responsive">
+                                            <table class="table table-centered table-vertical table-nowrap mb-0">
+        
+                                                <tbody>
+                                                    <tr>
+                                                        <td>#12354781</td>
+                                                        <td>
+                                                            <img src="assets/images/products/1.jpg" alt="user-image"
+                                                                style="height: 48px;" class="rounded me-2">
+                                                            Riverston Glass Chair
+                                                        </td>
+                                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
+                                                        <td>
+                                                            $185
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>#52140300</td>
+                                                        <td>
+                                                            <img src="assets/images/products/2.jpg" alt="user-image"
+                                                                style="height: 48px;" class="rounded me-2">
+                                                            Shine Company Catalina
+                                                        </td>
+                                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
+                                                        <td>
+                                                            $1,024
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>#96254137</td>
+                                                        <td>
+                                                            <img src="assets/images/products/3.jpg" alt="user-image"
+                                                                style="height: 48px;" class="rounded me-2">
+                                                            Trex Outdoor Furniture Cape
+                                                        </td>
+                                                        <td><span class="badge rounded-pill bg-danger">Cancel</span></td>
+                                                        <td>
+                                                            $657
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>#12365474</td>
+                                                        <td>
+                                                            <img src="assets/images/products/4.jpg" alt="user-image"
+                                                                style="height: 48px;" class="rounded me-2">
+                                                            Oasis Bathroom Teak Corner
+                                                        </td>
+                                                        <td><span class="badge rounded-pill bg-warning">Shipped</span></td>
+                                                        <td>
+                                                            $8451
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>#85214796</td>
+                                                        <td>
+                                                            <img src="assets/images/products/5.jpg" alt="user-image"
+                                                                style="height: 48px;" class="rounded me-2">
+                                                            BeoPlay Speaker
+                                                        </td>
+                                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
+                                                        <td>
+                                                            $584
+                                                        </td>
+                                                        <td>
+                                                            5/12/2016
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect">Edit</button>
+                                                        </td>
+                                                    </tr>
+        
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+
+                
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Admiria.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Right Sidebar -->
+        <div class="right-bar">
+            <div data-simplebar class="h-100">
+                <div class="rightbar-title px-3 py-4">
+                    <a href="javascript:void(0);" class="right-bar-toggle float-end">
+                        <i class="mdi mdi-close noti-icon"></i>
+                    </a>
+                    <h5 class="m-0">Settings</h5>
+                </div>
+
+                <!-- Settings -->
+                <hr class="mt-0">
+                <h6 class="text-center mb-0">Choose Layouts</h6>
+
+                <div class="p-4">
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-1.jpg" class="img-fluid img-thumbnail" alt="Layouts-1">
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch">
+                        <label class="form-check-label" for="light-mode-switch">Light Mode</label>
+                    </div>
+
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-2.jpg" class="img-fluid img-thumbnail" alt="Layouts-2">
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch" data-bsStyle="assets/css/bootstrap-dark.min.css" data-appStyle="assets/css/app-dark.min.css">
+                        <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
+                    </div>
+    
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-3.jpg" class="img-fluid img-thumbnail" alt="Layouts-3">
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox"  id="rtl-mode-switch" data-appStyle="assets/css/app-rtl.min.css">
+                        <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
+                    </div>
+            
+            
+                </div>
+
+            </div> <!-- end slimscroll-menu-->
+        </div>
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+                             
+        <!-- JAVASCRIPT -->
+        <script src="assets/libs/jquery/jquery.min.js"></script>
+        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="assets/libs/node-waves/waves.min.js"></script>
+
+        
+          <!-- Peity chart-->
+          <script src="assets/libs/peity/jquery.peity.min.js"></script>
+
+                <!--C3 Chart-->
+        <script src="assets/libs/d3/d3.min.js"></script>
+        <script src="assets/libs/c3/c3.min.js"></script>
+
+        <script src="assets/libs/jquery-knob/jquery.knob.min.js"></script> 
+
+        <script src="assets/js/pages/dashboard.init.js"></script>
+
+        <script src="assets/js/app.js"></script>
+
+    </body>
+
+<!-- Mirrored from themesbrand.com/admiria-multi/layouts/vertical/layouts-horizontal.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 May 2023 10:03:23 GMT -->
+</html>

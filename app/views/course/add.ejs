@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <%- include('../partials/head'); %>
+
+</head>
+
+<body data-sidebar="dark">
+
+
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <%- include('../partials/header'); %>
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <%- include('../partials/left-sidebar'); %>
+                <!-- Left Sidebar End -->
+
+                <!-- ============================================================== -->
+                <!-- Start right Content here enctype="multipart/form-data" -->
+                <!-- ============================================================== -->
+                <div class="main-content">
+
+                    <div class="page-content">
+                        <div class="container-fluid">
+                            <form action="/course/store" method="post">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <h4 class="card-title">Add Course</h4>
+
+                                                <div class="row mb-3">
+                                                    <label for="example-text-input"
+                                                        class="col-sm-2 col-form-label">Name</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="text"
+                                                            placeholder="Artisanal kale" name="title">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="example-search-input"
+                                                        class="col-sm-2 col-form-label">Content</label>
+                                                    <div class="col-sm-10">
+
+                                                        <textarea class="textarea"
+                                                            name="content">Next, use our Get Started docs to setup Tiny!</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="example-email-input"
+                                                        class="col-sm-2 col-form-label">Short
+                                                        Description</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea name="sort_desc" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="example-url-input"
+                                                        class="col-sm-2 col-form-label">Price</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="number" placeholder="0.00"
+                                                            name="price">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="example-tel-input"
+                                                        class="col-sm-2 col-form-label">Instrutor</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="text" placeholder=""
+                                                            name="instrutor">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="example-number-input"
+                                                        class="col-sm-2 col-form-label">Lessons</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="number" placeholder="5"
+                                                            name="lessons">
+                                                    </div>
+                                                </div>
+                                                <!--
+                                            <div class="row mb-3">
+                                                <label for="example-datetime-local-input"
+                                                    class="col-sm-2 col-form-label">Date and time</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="datetime-local"
+                                                        placeholder="2011-08-19T13:45:00"
+                                                        id="example-datetime-local-input">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="example-date-input"
+                                                    class="col-sm-2 col-form-label">Date</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="date" placeholder="2011-08-19"
+                                                        id="example-date-input">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="example-month-input"
+                                                    class="col-sm-2 col-form-label">Month</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="month" placeholder="2011-08"
+                                                        id="example-month-input">
+                                                </div>
+                                            </div>
+                                        -->
+                                                <div class="row mb-3">
+                                                    <label for="example-week-input"
+                                                        class="col-sm-2 col-form-label">Duration
+                                                        Week</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="week" placeholder="2013-W33"
+                                                            id="example-week-input" name="duration">
+                                                    </div>
+                                                </div>
+
+                                                <div class=" row mb-3">
+                                                    <label class="col-sm-2 col-form-label">Language</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-select" name="language"
+                                                            aria-label="Default select example">
+                                                            <option selected>select menu</option>
+                                                            <option value="English">English</option>
+                                                            <option value="Hindi">Hindi</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class=" row mb-3">
+                                                    <label class="col-sm-2 col-form-label">Certificate</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-select" name="certificate"
+                                                            aria-label="Default select example">
+                                                            <option selected>select menu</option>
+                                                            <option value="yes">Yes</option>
+                                                            <option value="no">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class=" row mb-3">
+                                                    <label class="col-sm-2 col-form-label">Type</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-select" name="course_type"
+                                                            aria-label="Default select example">
+                                                            <option selected>select menu</option>
+                                                            <option value="Beginner">Beginner</option>
+                                                            <option value="Intermediate">Intermediate</option>
+                                                            <option value="Advanced">Advanced</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                    <div class="col-4">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <h4 class="card-title">&nbsp;</h4>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Image</label>
+                                                    <!--<input type="file" name="image" class="form-control">-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end row -->
+                                <div class="row">
+                                    <div class="mb-0">
+                                        <div>
+                                            <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
+                                                Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-secondary waves-effect">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> <!-- container-fluid -->
+                    </div>
+                    <!-- End Page-content -->
+
+                    <%- include('../partials/footer'); %>
+
+                </div>
+                <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+    <!-- Right Sidebar -->
+    <%- include('../partials/right-bar'); %>
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+
+        <!-- JAVASCRIPT -->
+        <%- include('../partials/script'); %>
+            <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
+
+            <script src="/assets/js/pages/form-validation.init.js"></script>
+            <!--<script src="/assets/libs/tinymce/tinymce.min.js"></script>-->
+            <script
+                src="https://cdn.tiny.cloud/1/6ab28bnrnowz60swjd57abm8qy96q48v3mujhrkwv53eml26/tinymce/6/tinymce.min.js"
+                referrerpolicy="origin"></script>
+            <!--<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
+            <script>tinymce.init({ selector: '.textarea' });</script>
+            <script src="/assets/js/app.js"></script>
+
+</body>
+
+</html>

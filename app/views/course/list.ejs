@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <%- include('../partials/head'); %>
+
+</head>
+
+<body data-sidebar="dark">
+
+
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <%- include('../partials/header'); %>
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <%- include('../partials/left-sidebar'); %>
+                <!-- Left Sidebar End -->
+
+                <!-- ============================================================== -->
+                <!-- Start right Content here -->
+                <!-- ============================================================== -->
+                <div class="main-content">
+
+                    <div class="page-content">
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <h4 class="card-title">Example
+                                                <button type="button"
+                                                    class="btn btn-primary waves-effect waves-light float-end"
+                                                    data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Add
+                                                    Course</button>
+                                                <a href="/course/create"
+                                                    class="btn btn-primary waves-effect waves-light float-end">Add
+                                                    Course in Details</a>
+
+                                            </h4>
+                                            <p class="card-title-desc"></p>
+
+
+
+                                            <div class="table-rep-plugin">
+                                                <div class="table-responsive mb-0" data-bs-pattern="priority-columns">
+                                                    <table id="tech-companies-1" class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th data-priority="1">Course</th>
+                                                                <th data-priority="2">Price</th>
+
+                                                                <th data-priority="4">Instrutor</th>
+                                                                <th data-priority="5">Language</th>
+                                                                <th data-priority="6">Certificate</th>
+                                                                <th data-priority="7">Type</th>
+                                                                <th data-priority="8">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% if(data.length>0){ %>
+                                                                <% data.forEach(function(item,index) { %>
+                                                                    <tr>
+                                                                        <th>
+                                                                            <%= (item.title) %>
+                                                                        </th>
+                                                                        <td>
+                                                                            <%= (item.price) %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= (item.instrutor) %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= (item.language) %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= (item.certificate) %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= (item.course_type) %>
+                                                                        </td>
+
+                                                                        <td><a href="/course/<%= (item._id) %>"
+                                                                                class="btn btn-primary">edit</a></td>
+                                                                    </tr>
+                                                                    <% }); } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+
+                        </div> <!-- container-fluid -->
+                    </div>
+                    <!-- End Page-content -->
+
+                    <%- include('../partials/footer'); %>
+
+                </div>
+                <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+    <!--  Modal content for the above example -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Add course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3 needs-validation" novalidate>
+                        <div class="col-md-4">
+                            <label for="validationCustom01" class="form-label">Course name</label>
+                            <input type="text" class="form-control" id="validationCustom01" placeholder="Course"
+                                required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom02" class="form-label">Last name</label>
+                            <input type="text" class="form-control" id="validationCustom02" placeholder="Otto" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustomUsername" class="form-label">Username</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                <input type="text" class="form-control" id="validationCustomUsername"
+                                    aria-describedby="inputGroupPrepend" required>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="validationCustom03" class="form-label">City</label>
+                            <input type="text" class="form-control" id="validationCustom03" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid city.
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="validationCustom04" class="form-label">State</label>
+                            <select class="form-select" id="validationCustom04" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option>...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="validationCustom05" class="form-label">Zip</label>
+                            <input type="text" class="form-control" id="validationCustom05" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid zip.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                <label class="form-check-label" for="invalidCheck">
+                                    Agree to terms and conditions
+                                </label>
+                                <div class="invalid-feedback">
+                                    You must agree before submitting.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Submit form</button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+    <!-- Right Sidebar -->
+    <%- include('../partials/right-bar'); %>
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+
+        <!-- JAVASCRIPT -->
+        <%- include('../partials/script'); %>
+
+            <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
+
+            <script src="/assets/js/pages/form-validation.init.js"></script>
+
+            <script src="/assets/js/app.js"></script>
+
+</body>
+
+</html>
