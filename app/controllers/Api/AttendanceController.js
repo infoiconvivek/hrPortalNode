@@ -42,12 +42,18 @@ class AttendanceController {
     };
     static getByUserId = async (req, res) => {
         try {
-            const data = await Attendance.find(
-                { user_id: req.params.id },
+            const itemsPerPage = 30;
+            const page = parseInt(req.query.page) || 1;
+            const totalCount = await Attendance.countDocuments();
+            const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-            ).sort({ "_id": -1 }).limit(20);
+            const data = await Attendance.find({ user_id: req.params.id })
+                .sort({ "_id": -1 })
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage);
+
             if (data.length > 0) {
-                return res.status(200).send(data);
+                return res.status(200).send({ data, totalPages, currentPage: page });
             } else {
                 return res.status(404).send("Data not found...!");
             }

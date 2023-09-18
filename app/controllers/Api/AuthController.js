@@ -28,35 +28,38 @@ class AuthController {
                     { user_id: user._id, email, fname: user.first_name, roles: user.roles[0] },
                     process.env.TOKEN_KEY,
                     {
-                        expiresIn: "6h",
+                        expiresIn: "9h",
                     }
                 );
 
                 const id = user.roles[0];
                 const roles = await Role.findOne({ _id: id });
-
-                const authuser = {
-                    token: token,
-                    user_id: user._id,
-                    email: email,
-                    fname: user.first_name,
-                    lname: user.last_name,
-                    profile_img: user.profile_img,
-                    roles: roles
-                };
-                // save user token
-                //res.cookie("access_token", token, { httpOnly: true, secure: true, maxAge: 3600000 });
-                /*res.cookie('access_token', token,
-                    {
-                        secure: process.env.ENVIRONMENT !== "local",
-                        httpOnly: true,
-                        maxAge: 300000,
-                        sameSite: "none", path: "/",
-                    });*/
-                user.token = token;
-                //req.session.user = authuser;
-                // user
-                return res.status(200).json({ "data": authuser, "status": true });
+                if (roles) {
+                    const authuser = {
+                        token: token,
+                        user_id: user._id,
+                        email: email,
+                        fname: user.first_name,
+                        lname: user.last_name,
+                        profile_img: user.profile_img,
+                        roles: roles
+                    };
+                    // save user token
+                    //res.cookie("access_token", token, { httpOnly: true, secure: true, maxAge: 3600000 });
+                    /*res.cookie('access_token', token,
+                        {
+                            secure: process.env.ENVIRONMENT !== "local",
+                            httpOnly: true,
+                            maxAge: 300000,
+                            sameSite: "none", path: "/",
+                        });*/
+                    user.token = token;
+                    //req.session.user = authuser;
+                    // user
+                    return res.status(200).json({ "data": authuser, "status": true });
+                } else {
+                    res.status(400).json({ "message": "Role is not Assign", "status": false });
+                }
             } else {
                 res.status(400).json({ "message": "Invalid Credentials", "status": false });
             }

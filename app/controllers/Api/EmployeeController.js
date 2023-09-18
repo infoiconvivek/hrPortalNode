@@ -15,7 +15,7 @@ class EmployeeController {
             const currentMonth = Number(req.query.month) + 1;
             //const currentMonth = Number(req.params.month) + 1;
             //const currentMonth = new Date().getMonth() + 1;            
-            const currentYear = new Date().getFullYear();
+            const currentYear = Number(req.query.year);
             /*const data = await User.aggregate([
                 {
                     $lookup: {
@@ -86,6 +86,7 @@ class EmployeeController {
                         last_name: 1,
                         email: 1,
                         phone: 1,
+                        join_data: 1,
                         emp_id: 1,
                         designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
                         department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
@@ -132,6 +133,20 @@ class EmployeeController {
             return res.status(404).send(error);
         }
     };
+    static getLeaveById = async (req, res) => {
+        const uid = escapeHTML(req.params.id);
+        try {
+            const data = await User.findById(uid).select('leaves');
+            //const data = await User.find((user) => user.id == uid);
+            if (data) {
+                return res.status(200).send(data);
+            } else {
+                return res.status(404).send("Data not found...!");
+            }
+        } catch (error) {
+            return res.status(404).send(error);
+        }
+    };
     static view = async (req, res) => {
         const uid = escapeHTML(req.params.id);
         try {
@@ -149,16 +164,8 @@ class EmployeeController {
         }
     };
     static create = async (req, res) => {
-        let encryptedPassword; let roles; let path;
+        let encryptedPassword; let roles = []; let path;
         let login_user_role = await Role.findById(req.user.roles)
-        if (login_user_role === 'Admin') {
-            roles = [req.body.role]
-        } else {
-            const type = 'Employee';
-            const roleData = await Role.findOne({ name: type })
-            roles = [roleData._id]
-        }
-
 
         // Our register logic starts here
         try {
@@ -173,7 +180,7 @@ class EmployeeController {
             } = req.body;
 
             //const { filename, path } = req.file;
-            if (req.files) {
+            if (req.file) {
                 path = req.file.path.split('/').slice(1).join('/');
             }
             // Save the image metadata and additional fields to the database            
@@ -185,6 +192,9 @@ class EmployeeController {
 
             if (user_id) {
 
+                if (login_user_role.name === 'Admin') {
+                    roles[0] = req.body.role
+                }
                 let update_data = {};
                 update_data.first_name = first_name;
                 update_data.last_name = last_name;
@@ -215,8 +225,16 @@ class EmployeeController {
                 }
 
                 await User.findByIdAndUpdate(user_id, update_data);
-                return res.status(200).send('success');
+                return res.status(200).send('User Profile updated successfully');
             } else {
+
+                if (login_user_role.name === 'Admin') {
+                    roles = [req.body.role]
+                } else {
+                    const type = 'Employee';
+                    const roleData = await Role.findOne({ name: type })
+                    roles = [roleData._id]
+                }
                 // check if user already exist
                 // Validate if user exist in our database
                 const oldUser = await User.findOne({ email });
@@ -244,7 +262,7 @@ class EmployeeController {
                     roles
                 });
                 // return new user
-                return res.status(200).send(user);
+                return res.status(200).send('User Created Successfully');
             }
 
 
