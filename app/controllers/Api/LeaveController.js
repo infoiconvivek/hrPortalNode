@@ -149,8 +149,10 @@ class LeaveController {
             //const { leave_type, from_date, to_date, reason, user_id } = req.body;
             let renderedTemplate;
             const user = await User.findById(req.body.user_id);
+
             const department = await Department.findById(user.department).populate("dept_head");
-            const department_hr = await Department.find({ name: 'Hr' }).populate("dept_head");
+
+            const department_hr = await Department.find({ name: /^hr$/i }).populate("dept_head");
 
             let mailList = [user.email, department.dept_head.email, department_hr[0].dept_head.email];
             mailList.toString();
