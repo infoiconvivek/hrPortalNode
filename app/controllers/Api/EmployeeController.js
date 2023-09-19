@@ -150,10 +150,10 @@ class EmployeeController {
     static view = async (req, res) => {
         const uid = escapeHTML(req.params.id);
         try {
-            const data = await User.findById(uid).populate("designation").populate("department");
+            const data = await User.findById(uid);//.populate("designation").populate("department");
             const leaves = await Leave.find({ user_id: uid }).sort({ _id: -1 });
             //const data = await User.find((user) => user.id == uid);
-            //return res.status(200).send(leave);
+
             if (data) {
                 return res.status(200).send({ data: data, leavesList: leaves });
             } else {
@@ -272,11 +272,52 @@ class EmployeeController {
         }
         // Our register logic ends here
     }
-
     static update = async (req, res) => {
+        let path;
+        const uid = escapeHTML(req.params.id);
+
+        // Our register logic starts here
+        try {
+            const { first_name, last_name, email, phone } = req.body;
+            let user = await User.findOne({ _id: uid });
+            //const { filename, path } = req.file;
+            if (req.file) {
+                path = req.file.path.split('/').slice(1).join('/');
+            }
+
+            // Save the image metadata and additional fields to the database            
+
+            // Validate user input
+
+
+            if (user) {
+
+                let update_data = {};
+                update_data.first_name = first_name;
+                update_data.last_name = last_name;
+                update_data.email = email.toLowerCase();
+                update_data.phone = phone;
+
+                if (path) {
+                    update_data.profile_img = path;
+                }
+                const udata = await User.findByIdAndUpdate(uid, update_data);
+                return res.status(200).send(udata);
+            } else {
+                return res.status(204).send('Old password not match!');
+            }
+
+
+
+        } catch (err) {
+            return res.status(400).send(err);
+        }
+        // Our register logic ends here
+    }
+    static updatePassword = async (req, res) => {
         let encryptedPassword; let roles; let path;
         const uid = escapeHTML(req.params.id);
-        const oldPassword = await bcrypt.hash(req.body.oldPassword, 10);
+        const oldPassword = req.body.oldPassword;
 
         // Our register logic starts here
         try {
@@ -296,7 +337,7 @@ class EmployeeController {
                 return res.status(400).send("All input is required");
             }
 
-            if (user && (await bcrypt.compare(req.body.oldPassword, user.password))) {
+            if (user && (await bcrypt.compare(oldPassword, user.password))) {
 
                 let update_data = {};
                 //update_data.first_name = first_name;
@@ -316,7 +357,7 @@ class EmployeeController {
                 const udata = await User.findByIdAndUpdate(uid, update_data);
                 return res.status(200).send(udata);
             } else {
-                return res.status(204).send('Old password not match!');
+                return res.status(202).send('Old password not match!');
             }
 
 
