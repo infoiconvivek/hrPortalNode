@@ -63,12 +63,12 @@ class LeaveController {
         const leave_data = await Leave.findById(uid).populate("user_id");
         //retrive data form sending mail
         const department = await Department.findById(leave_data.user_id.department).populate("dept_head");
-        const department_hr = await Department.find({ name: 'Hr' }).populate("dept_head");
+        const department_hr = await Department.find({ name: /hr/i }).populate("dept_head");
 
         let mailList = [leave_data.user_id.email, department.dept_head.email, department_hr[0].dept_head.email];
         mailList.toString();
         //retrive data form sending mail
-        //return res.status(200).send(mailList);
+        //return res.status(202).send(mailList);
 
         try {
             const post_data = {};
@@ -126,10 +126,13 @@ class LeaveController {
             }
 
             const data = await Leave.findByIdAndUpdate(req.params.id, post_data);
+
             if (data) {
                 const leave_data2 = await Leave.findById(uid).populate("user_id");
+                //return res.status(202).send(leave_data2);
                 if (leave_data2.tl_approve === 'Approve' && leave_data2.hr_approve === 'Approve') {
-                    await User.updateOne({ _id: leave_data.user_id._id }, { $inc: { leaves: -daysDiff } });
+                    const user = await User.updateOne({ _id: leave_data.user_id._id }, { $inc: { leaves: -daysDiff } });
+                    //return res.status(202).send(user);
                 }
 
             }
