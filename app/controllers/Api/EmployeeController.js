@@ -7,6 +7,25 @@ import escapeHTML from "escape-html";
 import bcrypt from "bcryptjs";
 import multer from "multer";
 class EmployeeController {
+    static getAll = async (req, res) => {
+
+        try {
+            //return res.status(200).send(req.query.month);           
+            const data = await User.aggregate([ 
+                {
+                    $project: {
+                        first_name: 1,
+                        last_name: 1,
+                        
+                    }
+                }
+            ]);
+            return res.status(200).send(data);
+            
+        } catch (error) {
+            res.status(404).send(error);
+        }
+    };
     static get = async (req, res) => {
 
         try {
@@ -109,7 +128,7 @@ class EmployeeController {
                 { $limit: itemsPerPage },
 
             ]);
-            return res.status(200).send({ data, currentPage: page, totalPages });
+            
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });
             } else {

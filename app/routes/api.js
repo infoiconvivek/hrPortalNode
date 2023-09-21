@@ -47,7 +47,7 @@ router.get("/leave/:id", ApiAuth, LeaveController.getById);
 router.patch("/emp-leave/:id", ApiAuth, LeaveController.leaveUpdate);
 router.put("/update-leave/:id", ApiAuth, LeaveController.update);
 
-
+router.get("/employee-list/", EmployeeController.getAll);
 router.get("/employees/:month?", EmployeeController.get);
 router.get("/employee/:id", ApiAuth, EmployeeController.getById);
 router.get("/employee-view/:id", ApiAuth, EmployeeController.view);
@@ -61,7 +61,7 @@ router.post("/save-holiday", ApiAuth, HolidayController.create);
 router.get("/holidays", ApiAuth, HolidayController.get);
 router.get("/remove-holidays/:id", ApiAuth, HolidayController.remove);
 
-
+router.post("/download-attendance", ApiAuth, AttendanceController.downloadAttendance);
 router.post("/punch-in-out", ApiAuth, AttendanceController.create);
 router.get("/punch/:id", ApiAuth, AttendanceController.getOneByUserId);
 router.get("/punch-user/:id", ApiAuth, AttendanceController.getByUserId);

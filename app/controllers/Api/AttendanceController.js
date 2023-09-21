@@ -61,6 +61,29 @@ class AttendanceController {
             return res.status(404).send(error);
         }
     };
+    // download attendance by user and date rage
+    static downloadAttendance = async (req, res) => {
+
+        try {
+            const { id, start_date, end_date } = req.body;
+            const data = await Attendance.find({
+                user_id: id,
+                in_time: {
+                    $gte: start_date,
+                    $lt: end_date
+                }
+            })
+                .sort({ "_id": -1 })
+
+            if (data.length > 0) {
+                return res.status(200).send(data);
+            } else {
+                return res.status(404).send("Data not found...!");
+            }
+        } catch (error) {
+            return res.status(404).send(error);
+        }
+    };
     // CREAT
     static create = async (req, res) => {
         let data = {};
