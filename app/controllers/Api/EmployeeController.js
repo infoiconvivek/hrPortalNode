@@ -83,6 +83,85 @@ class EmployeeController {
     static get = async (req, res) => {
 
         try {
+            const search = req.query.search || '';
+            //return res.status(200).send(req.query.search);
+
+            const itemsPerPage = 5;
+            const page = parseInt(req.query.page) || 1;
+            const totalCount = await User.countDocuments();
+            const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+            const data = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'roles', // Name of the Role collection
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo' // Unwind the array
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
+                        $or: [
+                            { first_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in first_name
+                            { last_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in last_name
+                            { email: { $regex: search, $options: 'i' } }, // Case-insensitive search in email
+                            { phone: { $regex: search, $options: 'i' } }, // Case-insensitive search in phone
+                        ]
+                    }
+                },
+
+                {
+                    $lookup: {
+                        from: 'designations', // Replace 'designations' with the actual collection name
+                        localField: 'designation', // Assuming 'designation' is the foreign key in the 'users' collection
+                        foreignField: '_id', // Assuming '_id' is the primary key in the 'designations' collection
+                        as: 'designationInfo',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'departments', // Replace 'departments' with the actual collection name
+                        localField: 'department', // Assuming 'department' is the foreign key in the 'users' collection
+                        foreignField: '_id', // Assuming '_id' is the primary key in the 'departments' collection
+                        as: 'departmentInfo',
+                    },
+                },
+                {
+                    $project: {
+                        first_name: 1,
+                        last_name: 1,
+                        email: 1,
+                        phone: 1,
+                        join_data: 1,
+                        emp_id: 1,
+                        designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
+                        department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
+                        profile_img: 1,
+
+                    },
+                },
+                { $skip: (page - 1) * itemsPerPage },
+                { $limit: itemsPerPage },
+
+            ]);
+
+            if (data.length > 0) {
+                res.status(200).send({ data, totalPages, currentPage: page });
+            } else {
+                res.status(404).send("Data not found...!");
+            }
+        } catch (error) {
+            res.status(404).send(error);
+        }
+    };
+    static getEmpAttendance = async (req, res) => {
+
+        try {
             //return res.status(200).send(req.query.month);
 
             const currentMonth = Number(req.query.month) + 1;
