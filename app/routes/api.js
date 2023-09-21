@@ -47,7 +47,7 @@ router.get("/leave/:id", ApiAuth, LeaveController.getById);
 router.patch("/emp-leave/:id", ApiAuth, LeaveController.leaveUpdate);
 router.put("/update-leave/:id", ApiAuth, LeaveController.update);
 
-router.get("/employee-list/", EmployeeController.getAll);
+router.get("/employee-list/:id", EmployeeController.getAll);
 router.get("/employees/:month?", EmployeeController.get);
 router.get("/employee/:id", ApiAuth, EmployeeController.getById);
 router.get("/employee-view/:id", ApiAuth, EmployeeController.view);

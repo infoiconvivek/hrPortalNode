@@ -8,20 +8,74 @@ import bcrypt from "bcryptjs";
 import multer from "multer";
 class EmployeeController {
     static getAll = async (req, res) => {
-
+        const uid = escapeHTML(req.params.id);
         try {
-            //return res.status(200).send(req.query.month);           
-            const data = await User.aggregate([ 
+
+            let excludedUserIds = [uid]; // Add user IDs you want to exclude to this array
+            //return res.status(200).send(excludedUserIds);
+            console.log("Excluded User IDs:", excludedUserIds);
+
+
+            const usersWithAdminRole = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'roles', // Name of the Role collection
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo' // Unwind the array
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
+                        _id: { $nin: excludedUserIds } // Exclude users by _id
+                    }
+                },
                 {
                     $project: {
-                        first_name: 1,
-                        last_name: 1,
-                        
+                        value: '$_id',
+                        label: { $concat: ['$first_name', ' ', '$last_name'] }
                     }
                 }
             ]);
-            return res.status(200).send(data);
-            
+
+            return res.status(200).send(usersWithAdminRole);
+
+
+            // const data = await User.aggregate([
+            //     {
+            //         $match: {
+            //             _id: {
+            //                 $ne: uid // $nin operator means "not in"
+            //             }
+            //         }
+            //     },
+            //     {
+            //         $project: {
+            //             first_name: 1,
+            //             last_name: 1,
+
+            //         }
+            //     }
+            // ]);
+
+            // const allUsers = await User.find({}, { first_name: 1, last_name: 1, _id: 1 });
+
+            // // Filter out the excluded users
+            // const filteredUsers = allUsers.filter(user => !excludedUserIds.includes(user._id.toString()));
+
+            // // Extract first_name and last_name fields from the filtered users
+            // const userData = filteredUsers.map(user => ({
+            //     value: user._id,
+            //     label: user.first_name + ' ' + user.last_name
+            // }));
+
+
+            //return res.status(200).send(userData);
+
         } catch (error) {
             res.status(404).send(error);
         }
@@ -77,6 +131,23 @@ class EmployeeController {
             const data = await User.aggregate([
                 {
                     $lookup: {
+                        from: 'roles', // Name of the Role collection
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo' // Unwind the array
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
+                        //_id: { $nin: excludedUserIds } // Exclude users by _id
+                    }
+                },
+                {
+                    $lookup: {
                         from: 'attendances',
                         localField: '_id',
                         foreignField: 'user_id',
@@ -128,7 +199,7 @@ class EmployeeController {
                 { $limit: itemsPerPage },
 
             ]);
-            
+
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });
             } else {

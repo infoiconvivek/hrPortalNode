@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     description: { type: String, default: null },
     profile_img: { type: String, default: null },
     leaves: { type: Number, double: true, default: 0 },
-    roles: [{ type: String, ref: 'roles' }],
+    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'roles' }],
     createdAt: { type: Date, default: Date.now },
 });
 
