@@ -36,6 +36,29 @@ class LeaveController {
             res.status(404).send(error);
         }
     };
+    static downloadLeaves = async (req, res) => {
+        const itemsPerPage = 500;
+        try {
+            //const page = parseInt(req.query.page) || 1;
+            //const totalCount = await Leave.countDocuments();
+            //const totalPages = Math.ceil(totalCount / itemsPerPage);
+            const leaves = await Leave.find().limit(itemsPerPage).populate('user_id');
+            const data = leaves.sort((a, b) => {
+                const empIdA = a.user_id.emp_id;
+                const empIdB = b.user_id.emp_id;
+                return empIdA.localeCompare(empIdB); // Use localeCompare for string comparison
+            });
+            if (data.length > 0) {
+                //res.status(200).send({ data, totalPages, currentPage: page });
+                return res.status(200).send({ data });
+            } else {
+                res.status(404).send("Data not found...!");
+            }
+        } catch (error) {
+            res.status(404).send(error);
+        }
+    };
+
     static getById = async (req, res) => {
         try {
             const data = await Leave.find({ user_id: req.params.id }).sort({ _id: -1 }).populate("user_id");

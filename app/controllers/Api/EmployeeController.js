@@ -13,7 +13,7 @@ class EmployeeController {
 
             let excludedUserIds = [uid]; // Add user IDs you want to exclude to this array
             //return res.status(200).send(excludedUserIds);
-            console.log("Excluded User IDs:", excludedUserIds);
+            //console.log("Excluded User IDs:", excludedUserIds);
 
 
             const usersWithAdminRole = await User.aggregate([
@@ -43,39 +43,6 @@ class EmployeeController {
             ]);
 
             return res.status(200).send(usersWithAdminRole);
-
-
-            // const data = await User.aggregate([
-            //     {
-            //         $match: {
-            //             _id: {
-            //                 $ne: uid // $nin operator means "not in"
-            //             }
-            //         }
-            //     },
-            //     {
-            //         $project: {
-            //             first_name: 1,
-            //             last_name: 1,
-
-            //         }
-            //     }
-            // ]);
-
-            // const allUsers = await User.find({}, { first_name: 1, last_name: 1, _id: 1 });
-
-            // // Filter out the excluded users
-            // const filteredUsers = allUsers.filter(user => !excludedUserIds.includes(user._id.toString()));
-
-            // // Extract first_name and last_name fields from the filtered users
-            // const userData = filteredUsers.map(user => ({
-            //     value: user._id,
-            //     label: user.first_name + ' ' + user.last_name
-            // }));
-
-
-            //return res.status(200).send(userData);
-
         } catch (error) {
             res.status(404).send(error);
         }
@@ -91,64 +58,65 @@ class EmployeeController {
             const totalCount = await User.countDocuments();
             const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-            const data = await User.aggregate([
-                {
-                    $lookup: {
-                        from: 'roles', // Name of the Role collection
-                        localField: 'roles',
-                        foreignField: '_id',
-                        as: 'roleInfo'
-                    }
-                },
-                {
-                    $unwind: '$roleInfo' // Unwind the array
-                },
-                {
-                    $match: {
-                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
-                        $or: [
-                            { first_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in first_name
-                            { last_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in last_name
-                            { email: { $regex: search, $options: 'i' } }, // Case-insensitive search in email
-                            { phone: { $regex: search, $options: 'i' } }, // Case-insensitive search in phone
-                        ]
-                    }
-                },
-
-                {
-                    $lookup: {
-                        from: 'designations', // Replace 'designations' with the actual collection name
-                        localField: 'designation', // Assuming 'designation' is the foreign key in the 'users' collection
-                        foreignField: '_id', // Assuming '_id' is the primary key in the 'designations' collection
-                        as: 'designationInfo',
+            const data = await User.aggregate
+                ([
+                    {
+                        $lookup: {
+                            from: 'roles', // Name of the Role collection
+                            localField: 'roles',
+                            foreignField: '_id',
+                            as: 'roleInfo'
+                        }
                     },
-                },
-                {
-                    $lookup: {
-                        from: 'departments', // Replace 'departments' with the actual collection name
-                        localField: 'department', // Assuming 'department' is the foreign key in the 'users' collection
-                        foreignField: '_id', // Assuming '_id' is the primary key in the 'departments' collection
-                        as: 'departmentInfo',
+                    {
+                        $unwind: '$roleInfo' // Unwind the array
                     },
-                },
-                {
-                    $project: {
-                        first_name: 1,
-                        last_name: 1,
-                        email: 1,
-                        phone: 1,
-                        join_data: 1,
-                        emp_id: 1,
-                        designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
-                        department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
-                        profile_img: 1,
-
+                    {
+                        $match: {
+                            'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
+                            $or: [
+                                { first_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in first_name
+                                { last_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in last_name
+                                { email: { $regex: search, $options: 'i' } }, // Case-insensitive search in email
+                                { phone: { $regex: search, $options: 'i' } }, // Case-insensitive search in phone
+                            ]
+                        }
                     },
-                },
-                { $skip: (page - 1) * itemsPerPage },
-                { $limit: itemsPerPage },
 
-            ]);
+                    {
+                        $lookup: {
+                            from: 'designations', // Replace 'designations' with the actual collection name
+                            localField: 'designation', // Assuming 'designation' is the foreign key in the 'users' collection
+                            foreignField: '_id', // Assuming '_id' is the primary key in the 'designations' collection
+                            as: 'designationInfo',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'departments', // Replace 'departments' with the actual collection name
+                            localField: 'department', // Assuming 'department' is the foreign key in the 'users' collection
+                            foreignField: '_id', // Assuming '_id' is the primary key in the 'departments' collection
+                            as: 'departmentInfo',
+                        },
+                    },
+                    {
+                        $project: {
+                            first_name: 1,
+                            last_name: 1,
+                            email: 1,
+                            phone: 1,
+                            join_data: 1,
+                            emp_id: 1,
+                            designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
+                            department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
+                            profile_img: 1,
+
+                        },
+                    },
+                    { $skip: (page - 1) * itemsPerPage },
+                    { $limit: itemsPerPage },
+
+                ]);
 
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });

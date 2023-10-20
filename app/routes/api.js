@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import ApiAuth from "../middleware/Auth.js"
-import coursesController from "../controllers/Api/CoursesController.js";
+
 import AuthController from "../controllers/Api/AuthController.js";
 import DepartmentController from "../controllers/Api/DepartmentController.js";
 import DesignationController from "../controllers/Api/DesignationController.js";
@@ -18,12 +18,7 @@ const router = express.Router();
 router.post("/login", AuthController.authCheck);
 router.post("/register", AuthController.postRegister);
 router.post("/logout", AuthController.logout);
-// router.get("/", ApiAuth, coursesController.index);
-// router.post("/course/create", ApiAuth, coursesController.create);
-router.get("/course", ApiAuth, coursesController.get);
-// router.get("/course/:id", ApiAuth, coursesController.view);
-// router.put("/course/:id", ApiAuth, coursesController.update);
-// router.delete("/course/:id", ApiAuth, coursesController.delete);
+
 
 router.get("/dashboard", ApiAuth, DashboardController.get);
 
@@ -43,6 +38,7 @@ router.get("/roles", ApiAuth, RoleController.get);
 
 router.post("/save-leave", ApiAuth, LeaveController.create);
 router.get("/leaves", ApiAuth, LeaveController.get);
+router.get("/download-leaves", ApiAuth, LeaveController.downloadLeaves);
 router.get("/leave/:id", ApiAuth, LeaveController.getById);
 router.patch("/emp-leave/:id", ApiAuth, LeaveController.leaveUpdate);
 router.put("/update-leave/:id", ApiAuth, LeaveController.update);
@@ -65,6 +61,7 @@ router.get("/remove-holidays/:id", ApiAuth, HolidayController.remove);
 
 router.post("/download-attendance", ApiAuth, AttendanceController.downloadAttendance);
 router.post("/punch-in-out", ApiAuth, AttendanceController.create);
+router.patch("/update-attendance/", ApiAuth, AttendanceController.UpdateAttendance);
 router.get("/punch/:id", ApiAuth, AttendanceController.getOneByUserId);
 router.get("/punch-user/:id", ApiAuth, AttendanceController.getByUserId);
 
