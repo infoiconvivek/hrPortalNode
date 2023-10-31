@@ -17,14 +17,40 @@ class LeaveController {
         const itemsPerPage = 5;
         try {
             const page = parseInt(req.query.page) || 1;
-            const totalCount = await Leave.countDocuments();
-            const totalPages = Math.ceil(totalCount / itemsPerPage);
-            const data = await Leave.find()
+            const user_id = req.query.user;
+            const month = Number(req.query.month);
+
+            /*const data = await Leave.find({
+                'user_id': user_id,
+                //'from_date': month
+            })
                 .skip((page - 1) * itemsPerPage)
                 .limit(itemsPerPage)
-                .sort({ _id: -1 }).populate("user_id");
+                .sort({ _id: -1 }).populate("user_id");*/
+            const currentYear = new Date().getFullYear();
+            const query = {};
 
-            //const items = await Leave.find().skip((page - 1) * itemsPerPage).limit(itemsPerPage);
+            if (user_id) {
+                query.user_id = user_id;
+            }
+
+            if (month) {
+                //query.from_date = month + 1;
+                query.$expr = {
+                    $and: [
+                        { $eq: [{ $year: '$from_date' }, currentYear] },
+                        { $eq: [{ $month: '$from_date' }, month + 1] },
+                    ]
+                };
+            }
+            const totalCount = await Leave.countDocuments(query);
+            const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+            const data = await Leave.find(query)
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage)
+                .sort({ _id: -1 })
+                .populate("user_id");
 
 
             if (data.length > 0) {

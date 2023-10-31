@@ -35,6 +35,11 @@ class EmployeeController {
                     }
                 },
                 {
+                    $match: {
+                        //'status': 1, // Add condition for user status
+                    },
+                },
+                {
                     $project: {
                         value: '$_id',
                         label: { $concat: ['$first_name', ' ', '$last_name'] }
@@ -53,9 +58,31 @@ class EmployeeController {
             const search = req.query.search || '';
             //return res.status(200).send(req.query.search);
 
-            const itemsPerPage = 5;
+            const itemsPerPage = 6;
             const page = parseInt(req.query.page) || 1;
-            const totalCount = await User.countDocuments();
+            const totalCount = await User.countDocuments(
+                [
+                    {
+                        $lookup: {
+                            from: 'roles', // Name of the Role collection
+                            localField: 'roles',
+                            foreignField: '_id',
+                            as: 'roleInfo'
+                        }
+                    },
+                    {
+                        $unwind: '$roleInfo' // Unwind the array
+                    },
+                    {
+                        $match: {
+                            'roleInfo.name': { $ne: 'Admin' } // Exclude users with the "Admin" role
+
+                        }
+                    }
+
+
+                ]
+            );
             const totalPages = Math.ceil(totalCount / itemsPerPage);
 
             const data = await User.aggregate
@@ -110,6 +137,7 @@ class EmployeeController {
                             designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
                             department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
                             profile_img: 1,
+                            status: 1
 
                         },
                     },
@@ -194,6 +222,11 @@ class EmployeeController {
                     }
                 },
                 {
+                    $match: {
+                        'status': 1, // Add condition for user status
+                    },
+                },
+                {
                     $lookup: {
                         from: 'attendances',
                         localField: '_id',
@@ -228,6 +261,7 @@ class EmployeeController {
                         designation: { $arrayElemAt: ['$designationInfo.name', 0] }, // Assuming 'name' is the field in 'designations'
                         department: { $arrayElemAt: ['$departmentInfo.name', 0] }, // Assuming 'name' is the field in 'departments'
                         profile_img: 1,
+                        roles: '$roleInfo',
                         attendanceInfo: {
                             $filter: {
                                 input: '$attendanceInfo',
@@ -289,10 +323,40 @@ class EmployeeController {
         try {
             const data = await User.findById(uid);//.populate("designation").populate("department");
             const leaves = await Leave.find({ user_id: uid }).sort({ _id: -1 });
-            //const data = await User.find((user) => user.id == uid);
+            const currentMonth = new Date().getMonth() + 1;
+            const filteredData = leaves.filter(leave => {
+                const fromMonth = leave.from_date.getMonth() + 1; // Adding 1 because getMonth() returns a zero-based index
+                const toMonth = leave.to_date.getMonth() + 1; // Adding 1 for the same reason
 
+                return (
+                    (fromMonth === currentMonth || toMonth === currentMonth) &&
+                    leave.hr_approve === 'Approve' &&
+                    leave.tl_approve === 'Approve'
+                );
+            });
+
+            let totalDaysDiff = 0;
+
+            filteredData.forEach(leave_data => {
+                let daysDiff;
+                if (leave_data.leave_type === 'Short Leave') {
+                    daysDiff = 0.5;
+                } else if (leave_data.leave_type === 'Half Day Leave') {
+                    daysDiff = 0.25;
+                } else {
+                    const toDate = leave_data.to_date;
+                    const fromDate = leave_data.from_date;
+                    const diff = Math.abs(toDate - fromDate);
+                    const daysDiff1 = diff / (1000 * 60 * 60 * 24);
+                    daysDiff = daysDiff1 + 1;
+                }
+
+                totalDaysDiff += daysDiff;
+            });
+
+            //console.log(filteredData);
             if (data) {
-                return res.status(200).send({ data: data, leavesList: leaves });
+                return res.status(200).send({ data: data, leavesList: leaves, totalLeaveCurrentMonth: totalDaysDiff });
             } else {
                 return res.status(404).send("Data not found...!");
             }
@@ -323,7 +387,7 @@ class EmployeeController {
             // Save the image metadata and additional fields to the database            
 
             // Validate user input
-            if (!(email && first_name && last_name)) {
+            if (!(email && first_name && last_name && department && designation)) {
                 return res.status(400).send("All input is required");
             }
 
@@ -366,12 +430,19 @@ class EmployeeController {
             } else {
 
                 if (login_user_role.name === 'Admin') {
-                    roles = [req.body.role]
+                    if (req.body.role) {
+                        roles = [req.body.role]
+                    } else {
+                        const type = 'Employee';
+                        const roleData = await Role.findOne({ name: type })
+                        roles = [roleData._id]
+                    }
                 } else {
                     const type = 'Employee';
                     const roleData = await Role.findOne({ name: type })
                     roles = [roleData._id]
                 }
+
                 // check if user already exist
                 // Validate if user exist in our database
                 const oldUser = await User.findOne({ email });
@@ -504,7 +575,19 @@ class EmployeeController {
         }
         // Our register logic ends here
     }
+    static changeStatus = async (req, res) => {
+        const uid = escapeHTML(req.params.id);
+        // Our register logic starts here
+        try {
+            let update_data = {};
+            update_data.status = req.body.status;
+            const udata = await User.findByIdAndUpdate(uid, update_data);
+            return res.status(200).send(udata);
+        } catch (err) {
+            return res.status(400).send(err);
+        }
 
+    }
     static remove = async (req, res) => {
         try {
             await Leave.deleteMany({ user_id: req.params.id });

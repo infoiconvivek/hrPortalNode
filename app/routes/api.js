@@ -47,6 +47,7 @@ router.get("/employee-list/:id", EmployeeController.getAll);
 router.get("/employees/:page?", EmployeeController.get);
 router.get("/employees-attendance/:month?", EmployeeController.getEmpAttendance);
 
+router.patch("/employee-change-status/:id", ApiAuth, EmployeeController.changeStatus);
 router.get("/employee/:id", ApiAuth, EmployeeController.getById);
 router.get("/employee-view/:id", ApiAuth, EmployeeController.view);
 router.post("/create-employee", upload.single('profile_img'), ApiAuth, EmployeeController.create);
@@ -60,6 +61,7 @@ router.get("/holidays", ApiAuth, HolidayController.get);
 router.get("/remove-holidays/:id", ApiAuth, HolidayController.remove);
 
 router.post("/download-attendance", ApiAuth, AttendanceController.downloadAttendance);
+router.post("/download-all-attendance", ApiAuth, AttendanceController.downloadAllAttendance);
 router.post("/punch-in-out", ApiAuth, AttendanceController.create);
 router.patch("/update-attendance/", ApiAuth, AttendanceController.UpdateAttendance);
 router.get("/punch/:id", ApiAuth, AttendanceController.getOneByUserId);

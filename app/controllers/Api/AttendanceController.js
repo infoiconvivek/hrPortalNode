@@ -68,125 +68,18 @@ class AttendanceController {
         try {
             const { id, start_date, end_date } = req.body;
             let data = [];
-            if (id == 0) {
-                const data = await User.aggregate([
-                    {
-                        $lookup: {
-                            from: 'roles',
-                            localField: 'roles',
-                            foreignField: '_id',
-                            as: 'roleInfo',
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: 'designations',
-                            localField: 'designation',
-                            foreignField: '_id',
-                            as: 'designationInfo',
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: 'departments',
-                            localField: 'department',
-                            foreignField: '_id',
-                            as: 'departmentInfo',
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: 'attendances',
-                            localField: '_id',
-                            foreignField: 'user_id',
 
+            data = await Attendance.find({
+                user_id: id,
+                in_time: {
+                    $gte: new Date(start_date),
+                    $lt: new Date(end_date)
+                }
+            })
+                .populate('user_id', 'first_name last_name emp_id')
+                //.sort({ "_id": -1 })
+                .limit(500);
 
-                            // $match: {
-                            //     $and: [
-                            //         { $gte: ['$in_time', start_date] },
-                            //         { $lt: ['$in_time', end_date] },
-                            //     ],
-                            // },
-                            as: 'attendanceData',
-                        },
-
-                    },
-                    /*{
-                        $unwind: '$attendanceData' // Unwind the attendanceData array
-                    },
-                    {
-                        $match: {
-                            attendanceData: {
-                                $elemMatch: {
-                                    in_time: { $gte: start_date, $lt: end_date }
-                                }
-                            }
-                        },
-                    },
-                    {
-                        $match: {
-                            "attendanceData.in_time": {
-                                $gte: start_date,
-                                $lt: end_date
-                            }
-                        }
-                    },*/
-                    {
-                        $project: {
-                            first_name: 1,
-                            last_name: 1,
-                            email: 1,
-                            phone: 1,
-                            emp_id: 1,
-                            designation: { $arrayElemAt: ['$designationInfo.name', 0] },
-                            department: { $arrayElemAt: ['$departmentInfo.name', 0] },
-                            profile_img: 1,
-                            attendanceData: 1,
-                        },
-                    },
-                    {
-                        $group: {
-                            _id: '$department',
-                            count: { $sum: 1 },
-                            data: { $push: '$$ROOT' },
-                        },
-                    },
-                ]);
-                /*
-                data = await Attendance.find({
-                    user_id: id,
-                    in_time: {
-                        $gte: start_date,
-                        $lt: end_date
-                    }
-                })
-                    .limit(itemsPerPage)
-                    .populate('user_id', 'first_name last_name emp_id');
-                //.sort({ 'user_id.emp_id': 1 });*/
-
-
-
-                return res.status(200).send(data);
-            } else {
-                data = await Attendance.find({
-                    user_id: id,
-                    in_time: {
-                        $gte: start_date,
-                        $lt: end_date
-                    }
-                })
-                    .populate('user_id', 'first_name last_name emp_id')
-                    //.sort({ "_id": -1 })
-                    .limit(500);
-
-                // Sort the populated data by user_id in JavaScript
-                // data = data.sort((a, b) => {
-                //     const userA = a.user_id;
-                //     const userB = b.user_id;
-                //     return userA.emp_id.localeCompare(userB.emp_id);
-                // });
-
-            }
 
 
 
@@ -199,6 +92,98 @@ class AttendanceController {
             return res.status(404).send(error);
         }
     };
+    static downloadAllAttendance = async (req, res) => {
+        const itemsPerPage = 500;
+        try {
+            const { start_date, end_date } = req.body;
+
+            const data = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'roles',
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'designations',
+                        localField: 'designation',
+                        foreignField: '_id',
+                        as: 'designationInfo',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'departments',
+                        localField: 'department',
+                        foreignField: '_id',
+                        as: 'departmentInfo',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'attendances',
+                        localField: '_id',
+                        foreignField: 'user_id',
+                        as: 'attendanceData',
+                    },
+
+                },
+                {
+                    $unwind: '$attendanceData', // Unwind the attendanceData array
+                },
+                {
+                    $match: {
+                        'attendanceData.in_time': {
+                            $gte: new Date(start_date),
+                            $lt: new Date(end_date),
+                        },
+                    },
+                },
+                {
+                    $match: {
+                        'status': 1, // Add condition for user status
+                    },
+                },
+                {
+                    $project: {
+                        first_name: 1,
+                        last_name: 1,
+                        email: 1,
+                        phone: 1,
+                        emp_id: 1,
+                        designation: { $arrayElemAt: ['$designationInfo.name', 0] },
+                        department: { $arrayElemAt: ['$departmentInfo.name', 0] },
+                        profile_img: 1,
+                        attendanceData: 1,
+
+                    },
+                },
+                {
+                    $group: {
+                        _id: '$department',
+                        count: { $sum: 1 },
+                        data: { $push: '$$ROOT' },
+                    },
+                },
+
+            ]);
+
+
+
+
+
+            if (data.length > 0) {
+                return res.status(200).send(data);
+            } else {
+                return res.status(404).send("Data not found...!");
+            }
+        } catch (error) {
+            return res.status(404).send(error);
+        }
+    }
     // CREAT
     static create = async (req, res) => {
         let data = {};

@@ -20,7 +20,7 @@ class AuthController {
                 return res.status(400).json({ "message": "All input is required", "status": false });
             }
             // Validate if user exist in our database
-            const user = await User.findOne({ email });
+            const user = await User.findOne({ email, status: 1 });
 
             if (user && (await bcrypt.compare(password, user.password))) {
                 // Create token
