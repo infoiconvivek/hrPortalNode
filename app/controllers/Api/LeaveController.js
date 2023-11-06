@@ -69,14 +69,19 @@ class LeaveController {
             //const totalCount = await Leave.countDocuments();
             //const totalPages = Math.ceil(totalCount / itemsPerPage);
             const leaves = await Leave.find().limit(itemsPerPage).populate('user_id');
-            const data = leaves.sort((a, b) => {
-                const empIdA = a.user_id.emp_id;
-                const empIdB = b.user_id.emp_id;
-                return empIdA.localeCompare(empIdB); // Use localeCompare for string comparison
-            });
+            //console.log(leaves);
+            const data = leaves
+                .filter(leave => leave.user_id && leave.user_id.first_name) // Filter out records with missing user_id or first_name
+                .sort((a, b) => {
+                    const firstNameA = a.user_id.first_name;
+                    const firstNameB = b.user_id.first_name;
+                    return firstNameA.localeCompare(firstNameB);
+                });
+
+            //console.log(data);
             if (data.length > 0) {
                 //res.status(200).send({ data, totalPages, currentPage: page });
-                return res.status(200).send({ data });
+                return res.status(200).send(data);
             } else {
                 res.status(404).send("Data not found...!");
             }

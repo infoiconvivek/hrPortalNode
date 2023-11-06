@@ -14,7 +14,7 @@ const LeaveSchema = new mongoose.Schema(
         hr_approve: { type: String, required: false },
         tl_approve: { type: String, required: false },
         admin_approve: { type: String, required: false },
-        user_id: { type: String, required: true, ref: 'users' },
+        user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
         createdAt: { type: Date, default: Date.now },
     }
 );

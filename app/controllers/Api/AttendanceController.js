@@ -69,22 +69,78 @@ class AttendanceController {
             const { id, start_date, end_date } = req.body;
             let data = [];
 
-            data = await Attendance.find({
+            const attendanceData = await Attendance.find({
                 user_id: id,
                 in_time: {
                     $gte: new Date(start_date),
-                    $lt: new Date(end_date)
+                    $lte: new Date(end_date)
                 }
             })
-                .populate('user_id', 'first_name last_name emp_id')
+                .populate('user_id', 'first_name last_name emp_id roles')
                 //.sort({ "_id": -1 })
                 .limit(500);
 
+            /*const attendanceData = await Attendance.aggregate([
+                {
+                    $match: {
+                        user_id: id,
+                        in_time: {
+                            $gte: new Date(start_date),
+                            $lt: new Date(end_date)
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'users', // Replace 'users' with the actual name of your user collection
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'user'
+                    }
+                },
+
+                {
+                    $lookup: {
+                        from: 'roles', // Replace 'roles' with the actual name of your role collection
+                        localField: 'user.roles',
+                        foreignField: '_id',
+                        as: 'user.roles'
+                    }
+                },
+                {
+                    $project: {
+                        'user.roles.name': 1,
+                        'user.first_name': 1,
+                        'user.last_name': 1,
+                        'user.emp_id': 1,
+                        'in_time': 1,
+                        // Add other fields you want to include in the result
+                    }
+                },
+                {
+                    $limit: 500
+                }
+            ]);*/
 
 
 
-            if (data.length > 0) {
-                return res.status(200).send(data);
+
+            if (attendanceData.length > 0) {
+
+                const user_role_id = attendanceData[0].user_id.roles[0];
+                // Find the role by its ID
+                const user_role = await Role.findById(user_role_id);
+                let user_role_name = '';
+                if (user_role) {
+                    user_role_name = user_role.name; // Role name
+                }
+                const responseData = {
+                    data: attendanceData,
+                    userRoleName: user_role_name,
+                };
+
+
+                return res.status(200).send(responseData);
             } else {
                 return res.status(404).send("Data not found...!");
             }
@@ -138,7 +194,7 @@ class AttendanceController {
                     $match: {
                         'attendanceData.in_time': {
                             $gte: new Date(start_date),
-                            $lt: new Date(end_date),
+                            $lte: new Date(end_date),
                         },
                     },
                 },
@@ -156,6 +212,7 @@ class AttendanceController {
                         emp_id: 1,
                         designation: { $arrayElemAt: ['$designationInfo.name', 0] },
                         department: { $arrayElemAt: ['$departmentInfo.name', 0] },
+                        role: '$roleInfo.name',
                         profile_img: 1,
                         attendanceData: 1,
 
