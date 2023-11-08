@@ -12,12 +12,32 @@ class DashboardController {
         try {
             var todayDate = new Date().toISOString().slice(0, 10);
 
-            const data = await User.find().countDocuments();
+            //const data = await User.find().countDocuments();
+            const data = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'roles', // Name of the Role collection
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo' // Unwind the array
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role                        
+                    }
+                }
+
+            ]);
+
             const attendance = await Attendance.find({ in_time: { $gte: todayDate } }).countDocuments();
             const letComming = await Attendance.find({ in_time: { $gte: todayDate + 'T10:10:00' } }).countDocuments();
             const leave = await Leave.find({ from_date: { $gte: todayDate } }).countDocuments();
 
-            return res.send({ 'total_employee': data, 'attendance': attendance, 'letComming': letComming, 'leave': leave });
+            return res.send({ 'total_employee': data.length, 'attendance': attendance, 'letComming': letComming, 'leave': leave });
             return res.send(data)
             if (data.length > 0) {
                 return res.status(200).send({
