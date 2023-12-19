@@ -43,6 +43,7 @@ router.get("/leave/:id", ApiAuth, LeaveController.getById);
 router.patch("/emp-leave/:id", ApiAuth, LeaveController.leaveUpdate);
 router.put("/update-leave/:id", ApiAuth, LeaveController.update);
 
+router.get("/hrtl-list/", EmployeeController.getAllTlHr);
 router.get("/employee-list/:id", EmployeeController.getAll);
 router.get("/employees/:page?", EmployeeController.get);
 router.get("/employees-attendance/:month?", EmployeeController.getEmpAttendance);

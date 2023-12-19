@@ -128,12 +128,15 @@ class LeaveController {
             const post_data = {};
             if (req.body.role === 'Hr') {
                 post_data.hr_approve = req.body.approve;
+                post_data.hr_reason = req.body.leave_reason;
             } else if (req.body.role === 'Tl') {
                 post_data.tl_approve = req.body.approve;
+                post_data.tl_reason = req.body.leave_reason;
             } else if (req.body.role === 'Admin') {
                 post_data.admin_approve = req.body.approve;
                 post_data.tl_approve = req.body.approve;
                 post_data.hr_approve = req.body.approve;
+                post_data.admin_reason = req.body.leave_reason
             } else {
                 post_data = {};
             }
@@ -166,7 +169,8 @@ class LeaveController {
                 renderedTemplate = await ejs.renderFile(__dirname + "/app/views/emails/LeaveApproveEmail.ejs", {
                     to_date: toDate,
                     from_date: fromDate,
-                    first_name: leave_data.user_id.first_name
+                    first_name: leave_data.user_id.first_name,
+                    leave_reason: post_data.leave_reason
                 });
                 sendEmail(mailList, 'Leave Approval - ' + req.body.role, renderedTemplate);
                 //return res.status(200).send({ dd: leave_data.user_id._id });
@@ -174,10 +178,12 @@ class LeaveController {
                 renderedTemplate = await ejs.renderFile(__dirname + "/app/views/emails/LeaveRejectEmail.ejs", {
                     to_date: toDate,
                     from_date: fromDate,
-                    first_name: leave_data.user_id.first_name
+                    first_name: leave_data.user_id.first_name,
+                    leave_reason: post_data.leave_reason
                 });
                 sendEmail(mailList, 'Leave Reject - ' + req.body.role, renderedTemplate);
             }
+            console.log(post_data);
 
             const data = await Leave.findByIdAndUpdate(req.params.id, post_data);
 

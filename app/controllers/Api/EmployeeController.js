@@ -52,6 +52,45 @@ class EmployeeController {
             res.status(404).send(error);
         }
     };
+    static getAllTlHr = async (req, res) => {
+        try {
+            //return res.status(200).send(excludedUserIds);
+            //console.log("Excluded User IDs:", excludedUserIds);
+            const usersWithAdminRole = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'roles', // Name of the Role collection
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo' // Unwind the array
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
+                        'roleInfo.name': { $ne: 'Employee' },
+                    }
+                },
+                {
+                    $match: {
+                        //'status': 1, // Add condition for user status
+                    },
+                },
+                {
+                    $project: {
+                        value: '$_id',
+                        label: { $concat: ['$first_name', ' ', '$last_name'] }
+                    }
+                }
+            ]);
+            return res.status(200).send(usersWithAdminRole);
+        } catch (error) {
+            res.status(404).send(error);
+        }
+    };
     static get = async (req, res) => {
 
         try {
@@ -155,6 +194,10 @@ class EmployeeController {
             res.status(404).send(error);
         }
     };
+
+
+
+
     static getEmpAttendance = async (req, res) => {
 
         try {
@@ -320,8 +363,35 @@ class EmployeeController {
     };
     static view = async (req, res) => {
         const uid = escapeHTML(req.params.id);
+
         try {
-            const data = await User.findById(uid);//.populate("designation").populate("department");
+            const data = await User.findById(uid).populate("designation").populate("department");
+            const userRole = await User.aggregate([
+                {
+                    $match: { _id: data._id } // Match the user ID
+                },
+                {
+                    $lookup: {
+                        from: 'roles', // Name of the roles collection
+                        localField: 'roles', // Field in the User collection
+                        foreignField: '_id', // Field in the Roles collection
+                        as: 'rolesInfo' // Field to add role information
+                    }
+                },
+                {
+                    $unwind: '$rolesInfo' // Unwind the array of roles
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        roles: { $push: '$rolesInfo.name' }, // Push role names into an array
+                        // Other fields you may want to include (e.g., first_name, last_name, etc.)
+                        // Add them here similar to: first_name: { $first: '$first_name' }
+                    }
+                }
+            ]);
+
+
             const leaves = await Leave.find({ user_id: uid }).sort({ _id: -1 });
             const currentMonth = new Date().getMonth() + 1;
             const filteredData = leaves.filter(leave => {
@@ -356,7 +426,7 @@ class EmployeeController {
 
             //console.log(filteredData);
             if (data) {
-                return res.status(200).send({ data: data, leavesList: leaves, totalLeaveCurrentMonth: totalDaysDiff });
+                return res.status(200).send({ data: data, leavesList: leaves, totalLeaveCurrentMonth: totalDaysDiff, roles: userRole });
             } else {
                 return res.status(404).send("Data not found...!");
             }
@@ -421,7 +491,7 @@ class EmployeeController {
                     update_data.designation = designation;
                 }
                 update_data.description = description;
-                if (roles) {
+                if (roles.length > 0) {
                     update_data.roles = roles;
                 }
 
