@@ -3,6 +3,7 @@ import sendEmail from "../../config/sendEmail.js"
 import Department from "../../models/Department.js";
 //const sendEmail = require('../../config/sendEmail.js');
 import User from "../../models/User.js";
+import Role from "../../models/Role.js";
 import ejs from "ejs";
 import path from "path";
 import escapeHTML from "escape-html";
@@ -14,28 +15,33 @@ var __dirname = path.resolve();
 
 class LeaveController {
     static get = async (req, res) => {
-        const itemsPerPage = 5;
+        const itemsPerPage = 20;
         try {
             const page = parseInt(req.query.page) || 1;
             const user_id = req.query.user;
             const month = Number(req.query.month);
 
-            /*const data = await Leave.find({
-                'user_id': user_id,
-                //'from_date': month
-            })
-                .skip((page - 1) * itemsPerPage)
-                .limit(itemsPerPage)
-                .sort({ _id: -1 }).populate("user_id");*/
+            let department_id = '';
+            const login_user_id = req.user.user_id;
+            const roles = await Role.findOne({ _id: req.user.roles });
+            if (roles) {
+                if (roles.name == 'tl' || roles.name == 'Tl') {
+                    const department = await Department.findOne({ 'dept_head': login_user_id }).populate("dept_head");
+                    department_id = department._id;
+                }
+            }
+
             const currentYear = new Date().getFullYear();
             const query = {};
+
+
+
 
             if (user_id) {
                 query.user_id = user_id;
             }
 
             if (month) {
-                //query.from_date = month + 1;
                 query.$expr = {
                     $and: [
                         { $eq: [{ $year: '$from_date' }, currentYear] },
@@ -43,16 +49,99 @@ class LeaveController {
                     ]
                 };
             }
-            const totalCount = await Leave.countDocuments(query);
-            const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-            const data = await Leave.find(query)
-                .skip((page - 1) * itemsPerPage)
-                .limit(itemsPerPage)
-                .sort({ _id: -1 })
-                .populate("user_id");
+            /*const pipeline = [
+                { $match: query },
+                { $sort: { _id: -1 } },
+                { $skip: (page - 1) * itemsPerPage },
+                { $limit: itemsPerPage },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
+                    }
+                },
+                { $unwind: '$userDetails' },
+                {
+                    $match: {
+                        'userDetails.department': department_id
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        // Add other fields you need from the 'Leave' collection
+                        user_id: '$user_id',
+                        userDetails: 1, // Include other fields you need from the 'users' collection
+                        leave_type: 1,
+                        from_date: 1,
+                        to_date: 1,
+                        reason: 1,
+                        createdAt: 1,
+                        admin_approve: 1,
+                        hr_approve: 1,
+                        tl_approve: 1
+                    }
+                }
+            ];*/
+            const pipeline = [
+                { $match: query },
+                { $sort: { _id: -1 } },
+                { $skip: (page - 1) * itemsPerPage },
+                { $limit: itemsPerPage },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
+                    }
+                },
+                { $unwind: '$userDetails' },
+            ];
+
+            // Add condition for department_id
+            if (department_id) {
+                pipeline.push(
+                    {
+                        $match: {
+                            'userDetails.department': department_id
+                        }
+                    }
+                );
+            }
+
+            pipeline.push(
+                {
+                    $project: {
+                        _id: 1,
+                        // Add other fields you need from the 'Leave' collection
+                        user_id: '$user_id',
+                        userDetails: 1, // Include other fields you need from the 'users' collection
+                        leave_type: 1,
+                        from_date: 1,
+                        to_date: 1,
+                        reason: 1,
+                        createdAt: 1,
+                        admin_approve: 1,
+                        hr_approve: 1,
+                        tl_approve: 1
+                    }
+                }
+            );
+
+            const totalCount = await Leave.countDocuments({
+                ...query,
+                'userDetails.department': department_id
+            });
+            const totalPages = Math.ceil(totalCount.length > 0 ? totalCount[0].count / itemsPerPage : 0);
+
+            const data = await Leave.aggregate(pipeline);
 
 
+            console.log(data);
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });
             } else {
@@ -68,20 +157,108 @@ class LeaveController {
             //const page = parseInt(req.query.page) || 1;
             //const totalCount = await Leave.countDocuments();
             //const totalPages = Math.ceil(totalCount / itemsPerPage);
-            const leaves = await Leave.find().limit(itemsPerPage).populate('user_id');
-            //console.log(leaves);
-            const data = leaves
-                .filter(leave => leave.user_id && leave.user_id.first_name) // Filter out records with missing user_id or first_name
-                .sort((a, b) => {
-                    const firstNameA = a.user_id.first_name;
-                    const firstNameB = b.user_id.first_name;
-                    return firstNameA.localeCompare(firstNameB);
-                });
+            let department_id = '';
+            const login_user_id = req.user.user_id;
+            const roles = await Role.findOne({ _id: req.user.roles });
+            if (roles) {
+                if (roles.name == 'tl' || roles.name == 'Tl') {
+                    const department = await Department.findOne({ 'dept_head': login_user_id }).populate("dept_head");
+                    department_id = department._id;
+                }
+            }
+            /*const pipeline = [
+                { $limit: itemsPerPage },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
+                    }
+                },
+                { $unwind: '$userDetails' },
+                {
+                    $match: {
+                        'userDetails.department': department_id
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        // Add other fields you need from the 'Leave' collection
+                        user_id: '$user_id',
+                        userDetails: 1, // Include other fields you need from the 'users' collection
+                        leave_type: 1,
+                        from_date: 1,
+                        to_date: 1,
+                        reason: 1,
+                        createdAt: 1,
+                        admin_approve: 1,
+                        hr_approve: 1,
+                        tl_approve: 1
+                    }
+                }
+            ];*/
+            const pipeline = [
+                { $limit: itemsPerPage },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
+                    }
+                },
+                { $unwind: '$userDetails' },
+            ];
+
+            // Add condition for department_id
+            if (department_id) {
+                pipeline.push(
+                    {
+                        $match: {
+                            'userDetails.department': department_id
+                        }
+                    }
+                );
+            }
+
+            pipeline.push(
+                {
+                    $project: {
+                        _id: 1,
+                        // Add other fields you need from the 'Leave' collection
+                        user_id: '$user_id',
+                        userDetails: 1, // Include other fields you need from the 'users' collection
+                        leave_type: 1,
+                        from_date: 1,
+                        to_date: 1,
+                        reason: 1,
+                        createdAt: 1,
+                        admin_approve: 1,
+                        hr_approve: 1,
+                        tl_approve: 1
+                    }
+                },
+                { $sort: { 'userDetails.first_name': 1 } }
+            );
+
+            const data1 = await Leave.aggregate(pipeline);
+
+            // const leaves = await Leave.find().limit(itemsPerPage).populate('user_id');
+            // //console.log(leaves);
+            // const data = leaves
+            //     .filter(leave => leave.user_id && leave.user_id.first_name) // Filter out records with missing user_id or first_name
+            //     .sort((a, b) => {
+            //         const firstNameA = a.user_id.first_name;
+            //         const firstNameB = b.user_id.first_name;
+            //         return firstNameA.localeCompare(firstNameB);
+            //     });
 
             //console.log(data);
-            if (data.length > 0) {
+            if (data1.length > 0) {
                 //res.status(200).send({ data, totalPages, currentPage: page });
-                return res.status(200).send(data);
+                return res.status(200).send(data1);
             } else {
                 res.status(404).send("Data not found...!");
             }

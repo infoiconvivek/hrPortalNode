@@ -14,6 +14,8 @@ import DashboardController from "../controllers/Api/DashboardController.js"
 import RoleController from "../controllers/Api/RoleController.js";
 import LeaveTypeController from "../controllers/Api/LeaveTypeController.js";
 const router = express.Router();
+//router.use(ApiAuth);
+
 
 router.post("/login", AuthController.authCheck);
 router.post("/register", AuthController.postRegister);
@@ -37,8 +39,8 @@ router.get("/remove-leave-type/:id", ApiAuth, LeaveTypeController.delete);
 router.get("/roles", ApiAuth, RoleController.get);
 
 router.post("/save-leave", ApiAuth, LeaveController.create);
-router.get("/leaves", ApiAuth, LeaveController.get);
 router.get("/download-leaves", ApiAuth, LeaveController.downloadLeaves);
+router.get("/leaves", ApiAuth, LeaveController.get);
 router.get("/leave/:id", ApiAuth, LeaveController.getById);
 router.patch("/emp-leave/:id", ApiAuth, LeaveController.leaveUpdate);
 router.put("/update-leave/:id", ApiAuth, LeaveController.update);

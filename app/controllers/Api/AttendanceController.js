@@ -1,7 +1,7 @@
 import Attendance from "../../models/Attendance.js";
 import User from "../../models/User.js";
 import Role from "../../models/Role.js";
-
+import Department from "../../models/Department.js";
 class AttendanceController {
     // READ ALL DATA   
     static get = async (req, res) => {
@@ -150,6 +150,16 @@ class AttendanceController {
     };
     static downloadAllAttendance = async (req, res) => {
         const itemsPerPage = 500;
+        let department_id = '';
+        const login_user_id = req.user.user_id;
+        const roles = await Role.findOne({ _id: req.user.roles });
+        if (roles) {
+            if (roles.name == 'tl' || roles.name == 'Tl') {
+                const department = await Department.findOne({ 'dept_head': login_user_id }).populate("dept_head");
+                department_id = department._id;
+            }
+        }
+
         try {
             const { start_date, end_date } = req.body;
 
@@ -201,6 +211,8 @@ class AttendanceController {
                 {
                     $match: {
                         'status': 1, // Add condition for user status
+                        ...(department_id ? { 'department': department_id } : {}),
+                        /*'department': department_id,*/
                     },
                 },
                 {

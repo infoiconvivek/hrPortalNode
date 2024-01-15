@@ -1,6 +1,7 @@
 import User from "../../models/User.js";
 import Role from "../../models/Role.js";
-import Leave from "../../models/Leave.js"
+import Leave from "../../models/Leave.js";
+import Department from "../../models/Department.js";
 import Attendance from "../../models/Attendance.js";
 import path from "path";
 import escapeHTML from "escape-html";
@@ -14,9 +15,48 @@ class EmployeeController {
             let excludedUserIds = [uid]; // Add user IDs you want to exclude to this array
             //return res.status(200).send(excludedUserIds);
             //console.log("Excluded User IDs:", excludedUserIds);
+            let department_id = '';
+            const roles = await Role.findOne({ _id: req.user.roles });
+            if (roles) {
+                if (roles.name == 'tl' || roles.name == 'Tl') {
+                    const department = await Department.findOne({ 'dept_head': req.user.user_id }).populate("dept_head");
+                    department_id = department._id;
+                }
+            }
+            const pipeline = [
+                {
+                    $lookup: {
+                        from: 'roles',
+                        localField: 'roles',
+                        foreignField: '_id',
+                        as: 'roleInfo'
+                    }
+                },
+                {
+                    $unwind: '$roleInfo'
+                },
+                {
+                    $match: {
+                        'roleInfo.name': { $ne: 'Admin' },
+                        _id: { $nin: excludedUserIds }
+                    }
+                },
+                {
+                    $match: {
+                        'status': 1,
+                        ...(department_id ? { 'department': department_id } : {}) // Conditionally add department filter
+                    },
+                },
+                {
+                    $project: {
+                        value: '$_id',
+                        label: { $concat: ['$first_name', ' ', '$last_name'] }
+                    }
+                }
+            ];
 
-
-            const usersWithAdminRole = await User.aggregate([
+            const usersWithAdminRole = await User.aggregate(pipeline);
+            /*const usersWithAdminRole = await User.aggregate([
                 {
                     $lookup: {
                         from: 'roles', // Name of the Role collection
@@ -36,7 +76,8 @@ class EmployeeController {
                 },
                 {
                     $match: {
-                        //'status': 1, // Add condition for user status
+                        'status': 1, // Add condition for user status
+                        'department': department_id
                     },
                 },
                 {
@@ -45,7 +86,7 @@ class EmployeeController {
                         label: { $concat: ['$first_name', ' ', '$last_name'] }
                     }
                 }
-            ]);
+            ]);*/
 
             return res.status(200).send(usersWithAdminRole);
         } catch (error) {
@@ -76,7 +117,7 @@ class EmployeeController {
                 },
                 {
                     $match: {
-                        //'status': 1, // Add condition for user status
+                        'status': 1, // Add condition for user status
                     },
                 },
                 {
@@ -92,37 +133,23 @@ class EmployeeController {
         }
     };
     static get = async (req, res) => {
+        console.log('req.user', req.user);
 
         try {
             const search = req.query.search || '';
             //return res.status(200).send(req.query.search);
+            let department_id = '';
 
-            const itemsPerPage = 6;
+            const roles = await Role.findOne({ _id: req.user.roles });
+            if (roles) {
+                if (roles.name == 'tl' || roles.name == 'Tl') {
+                    const department = await Department.findOne({ 'dept_head': req.user.user_id }).populate("dept_head");
+                    department_id = department._id;
+                }
+            }
+
+            const itemsPerPage = 20;
             const page = parseInt(req.query.page) || 1;
-            const totalCount = await User.countDocuments(
-                [
-                    {
-                        $lookup: {
-                            from: 'roles', // Name of the Role collection
-                            localField: 'roles',
-                            foreignField: '_id',
-                            as: 'roleInfo'
-                        }
-                    },
-                    {
-                        $unwind: '$roleInfo' // Unwind the array
-                    },
-                    {
-                        $match: {
-                            'roleInfo.name': { $ne: 'Admin' } // Exclude users with the "Admin" role
-
-                        }
-                    }
-
-
-                ]
-            );
-            const totalPages = Math.ceil(totalCount / itemsPerPage);
 
             const data = await User.aggregate
                 ([
@@ -145,7 +172,16 @@ class EmployeeController {
                                 { last_name: { $regex: search, $options: 'i' } }, // Case-insensitive search in last_name
                                 { email: { $regex: search, $options: 'i' } }, // Case-insensitive search in email
                                 { phone: { $regex: search, $options: 'i' } }, // Case-insensitive search in phone
-                            ]
+                            ],
+                            ...(department_id ? { 'department': department_id } : {}) // Conditionally add department filter
+                            /*'department': { $eq: department_id },
+                            $expr: { // Use $expr for conditional filtering
+                                $cond: {
+                                    if: { $eq: ["$department_id", null] }, // Check if department_id is null
+                                    then: true, // If null, apply no filter
+                                    else: { $eq: ["$department", "$department_id"] } // Otherwise, apply department filter
+                                }
+                            }*/
                         }
                     },
 
@@ -184,6 +220,20 @@ class EmployeeController {
                     { $limit: itemsPerPage },
 
                 ]);
+            const totalUsers = await User.countDocuments({
+                'roleInfo.name': { $ne: 'Admin' },
+                $or: [
+                    { first_name: { $regex: search, $options: 'i' } },
+                    { last_name: { $regex: search, $options: 'i' } },
+                    { email: { $regex: search, $options: 'i' } },
+                    { phone: { $regex: search, $options: 'i' } },
+                ],
+                ...(department_id ? { 'department': department_id } : {}),
+                'status': 1,
+            });
+
+            const totalCount = totalUsers;
+            const totalPages = Math.ceil(totalCount / itemsPerPage);
 
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });
@@ -201,7 +251,6 @@ class EmployeeController {
     static getEmpAttendance = async (req, res) => {
 
         try {
-            //return res.status(200).send(req.query.month);
 
             const currentMonth = Number(req.query.month) + 1;
             //const currentMonth = Number(req.params.month) + 1;
@@ -241,7 +290,17 @@ class EmployeeController {
                     },
                 },
             ]);*/
-            const itemsPerPage = 5;
+            let department_id = '';
+            const login_user_id = req.user.user_id;
+            const roles = await Role.findOne({ _id: req.user.roles });
+            if (roles) {
+                if (roles.name == 'tl' || roles.name == 'Tl') {
+                    const department = await Department.findOne({ 'dept_head': login_user_id }).populate("dept_head");
+                    department_id = department._id;
+                }
+            }
+
+            const itemsPerPage = 10;
             const page = parseInt(req.query.page) || 1;
             const totalCount = await User.countDocuments();
             const totalPages = Math.ceil(totalCount / itemsPerPage);
@@ -262,13 +321,10 @@ class EmployeeController {
                     $match: {
                         'roleInfo.name': { $ne: 'Admin' }, // Exclude users with the "Admin" role
                         //_id: { $nin: excludedUserIds } // Exclude users by _id
+
                     }
                 },
-                {
-                    $match: {
-                        'status': 1, // Add condition for user status
-                    },
-                },
+
                 {
                     $lookup: {
                         from: 'attendances',
@@ -292,6 +348,13 @@ class EmployeeController {
                         foreignField: '_id', // Assuming '_id' is the primary key in the 'departments' collection
                         as: 'departmentInfo',
                     },
+                },
+                {
+                    $match: {
+                        'status': 1, // Add condition for user status
+                        ...(department_id ? { 'department': department_id } : {}),
+                        //'department': department_id // Match department ID
+                    }
                 },
                 {
                     $project: {

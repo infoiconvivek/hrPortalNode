@@ -4,6 +4,9 @@ const config = process.env;
 
 const verifyToken = (req, res, next) => {
     //const acc_token = req.cookies['access_token'];
+    if (req.path == '/api/login') {
+        return next();
+    }
 
     const token = req.body.token || req.query.token || req.headers["x-access-token"] || req.query.access_token;
 
@@ -23,8 +26,10 @@ const verifyToken = (req, res, next) => {
         //req["permissions"] = decodeUser.roles[0].permissions
 
         req.user = decoded;
+
         //req.permissions = decodeUser.roles[0].permissions;
         //return res.status(401).send(req["user"]);
+
     } catch (err) {
         return res.status(401).send("Invalid Token");
         //return res.status(200).json({ "message": "Invalid Token", "status": false });
