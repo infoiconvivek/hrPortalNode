@@ -12,6 +12,7 @@ import multer from "multer";
 import rateLimit from "express-rate-limit";
 import User from "./app/models/User.js";
 import cron from "node-cron";
+import middelware from "./app/middleware/Auth.js"
 //import moment from "moment-timezone"
 //import sendEmail from "./app/config/sendEmail.js"
 //import database from "./app/config/database.js"
@@ -71,17 +72,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
+dotenv.config();
 
 // allow for call api on other server
 app.disable("x-powered-by"); // For security
 app.use(cors({ origin: true, credentials: true }));
 
-
+app.use(middelware);
 // API_ROUTER START
 app.use("/api", api);
 app.use("/", web);
 
-dotenv.config();
+
 
 
 
