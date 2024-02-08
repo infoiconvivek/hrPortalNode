@@ -1,5 +1,6 @@
 import Department from "../../models/Department.js";
 //import fs from "fs"
+import User from "../../models/User.js";
 
 class DepartmentController {
     // READ ALL DATA   
@@ -39,6 +40,8 @@ class DepartmentController {
                     message: "All input is required",
                 });
             }
+            //const data = await User.findById(uid);
+
             if (id) {
                 const result = await Department.findByIdAndUpdate(id, { name, dept_head, emp_under });
                 return res.status(200).send({

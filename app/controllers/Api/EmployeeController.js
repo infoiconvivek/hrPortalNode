@@ -7,6 +7,7 @@ import path from "path";
 import escapeHTML from "escape-html";
 import bcrypt from "bcryptjs";
 import multer from "multer";
+
 class EmployeeController {
     static getAll = async (req, res) => {
         const uid = escapeHTML(req.params.id);
@@ -133,7 +134,7 @@ class EmployeeController {
         }
     };
     static get = async (req, res) => {
-        console.log('req.user', req.user);
+        console.log('req.user1', req.user);
 
         try {
             const search = req.query.search || '';
@@ -153,6 +154,11 @@ class EmployeeController {
 
             const data = await User.aggregate
                 ([
+                    {
+                        $match: {
+                            _id: { $ne: req.user.user_id } // Excluding the current user ID
+                        }
+                    },
                     {
                         $lookup: {
                             from: 'roles', // Name of the Role collection
@@ -306,6 +312,11 @@ class EmployeeController {
             const totalPages = Math.ceil(totalCount / itemsPerPage);
 
             const data = await User.aggregate([
+                {
+                    $match: {
+                        _id: { $ne: req.user.user_id } // Excluding the current user ID
+                    }
+                },
                 {
                     $lookup: {
                         from: 'roles', // Name of the Role collection

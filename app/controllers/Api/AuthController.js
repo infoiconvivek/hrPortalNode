@@ -114,7 +114,7 @@ class AuthController {
                 { user_id: user._id, email, fname: user.first_name, roles: roles },
                 process.env.TOKEN_KEY,
                 {
-                    expiresIn: "6h",
+                    expiresIn: "24h",
                 }
             );
             res.cookie('access_token', token,

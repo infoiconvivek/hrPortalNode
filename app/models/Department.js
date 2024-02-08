@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 const DepartmentSchema = new mongoose.Schema(
     {
         name: { type: String, required: true },
-        dept_head: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
-        emp_under: { type: String, required: true },
+        dept_head: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'users' },
+        emp_under: { type: String, required: false },
         createdAt: { type: Date, default: Date.now },
     }
 );

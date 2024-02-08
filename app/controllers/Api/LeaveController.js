@@ -8,19 +8,22 @@ import ejs from "ejs";
 import path from "path";
 import escapeHTML from "escape-html";
 import Moment from "moment";
-
+import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 
 var __dirname = path.resolve();
 
 class LeaveController {
     static get = async (req, res) => {
+
         const itemsPerPage = 20;
         try {
             const page = parseInt(req.query.page) || 1;
             const user_id = req.query.user;
-            const month = Number(req.query.month);
+            let month = req.query.month;
 
+            //console.log(mongoose.Types.ObjectId(user_id));
             let department_id = '';
             const login_user_id = req.user.user_id;
             const roles = await Role.findOne({ _id: req.user.roles });
@@ -35,57 +38,26 @@ class LeaveController {
             const query = {};
 
 
-
-
+            console.log(user_id);
             if (user_id) {
-                query.user_id = user_id;
+                // const objectId = mongoose.Types.ObjectId(user_id);
+                query.user_id = new ObjectId(user_id);
             }
+            if (isNaN(month)) {
 
-            if (month) {
-                query.$expr = {
-                    $and: [
-                        { $eq: [{ $year: '$from_date' }, currentYear] },
-                        { $eq: [{ $month: '$from_date' }, month + 1] },
-                    ]
-                };
-            }
+            } else {
 
-            /*const pipeline = [
-                { $match: query },
-                { $sort: { _id: -1 } },
-                { $skip: (page - 1) * itemsPerPage },
-                { $limit: itemsPerPage },
-                {
-                    $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
-                        as: 'userDetails'
-                    }
-                },
-                { $unwind: '$userDetails' },
-                {
-                    $match: {
-                        'userDetails.department': department_id
-                    }
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        // Add other fields you need from the 'Leave' collection
-                        user_id: '$user_id',
-                        userDetails: 1, // Include other fields you need from the 'users' collection
-                        leave_type: 1,
-                        from_date: 1,
-                        to_date: 1,
-                        reason: 1,
-                        createdAt: 1,
-                        admin_approve: 1,
-                        hr_approve: 1,
-                        tl_approve: 1
-                    }
+                if (month) {
+                    month = Number(month);
+                    query.$expr = {
+                        $and: [
+                            { $eq: [{ $year: '$from_date' }, currentYear] },
+                            { $eq: [{ $month: '$from_date' }, month + 1] },
+                        ]
+                    };
                 }
-            ];*/
+            }
+            console.log(query);
             const pipeline = [
                 { $match: query },
                 { $sort: { _id: -1 } },
@@ -141,7 +113,7 @@ class LeaveController {
             const data = await Leave.aggregate(pipeline);
 
 
-            console.log(data);
+            //console.log(data);
             if (data.length > 0) {
                 res.status(200).send({ data, totalPages, currentPage: page });
             } else {
@@ -322,11 +294,11 @@ class LeaveController {
             //let toDate = new Date(leave_data.to_date).toISOString().substring(0, 10);
             //let fromDate1 = new Date(leave_data.from_date).toISOString().substring(0, 10);
             if (leave_data.leave_type === 'Short Leave') {
-                daysDiff = 0.5;
+                daysDiff = 0.25;
                 toDate = Moment(leave_data.to_date).format('LLL');
                 fromDate = Moment(leave_data.from_date).format('LLL');
             } else if (leave_data.leave_type === 'Half Day Leave') {
-                daysDiff = 0.25;
+                daysDiff = 0.50;
                 toDate = Moment(leave_data.to_date).format('LLL');
                 fromDate = Moment(leave_data.from_date).format('LLL');
             } else {
