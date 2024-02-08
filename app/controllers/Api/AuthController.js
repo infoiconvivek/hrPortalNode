@@ -28,7 +28,7 @@ class AuthController {
                     { user_id: user._id, email, fname: user.first_name, roles: user.roles[0] },
                     process.env.TOKEN_KEY,
                     {
-                        expiresIn: "9h",
+                        expiresIn: "24h",
                     }
                 );
 
